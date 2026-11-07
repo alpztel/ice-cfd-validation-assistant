@@ -5,6 +5,25 @@ All notable changes to **`ice-cfd-validation-assistant`** are documented in this
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.0] - 2026-11-08
+
+### Added
+- **`ice_cfd_validator.ignition` (Step 6 — High-Altitude Auto-Ignition Kinetics & CFD Diagnostics)**:
+  - `correlations.py`: Arrhenius-type empirical auto-ignition models (`arrhenius_state_delay`, `compute_apparent_activation_energy`, `scale_activation_energy`) with verified Wolfer (1938) and Assanis et al. (2003) parameters for EN590 Diesel and Jet-A1 / JP-8 / F-34.
+  - Hardenberg & Hase (1979, SAE 790493) global ignition delay correlation (`hardenberg_hase_delay`, `HardenbergHaseResult`) supporting both classic additive and multiplicative pressure coupling, apparent activation energy scaling from Cetane Number ($E_a = 618840 / (\text{CN} + 25)$), and strict $P_{\text{TDC}} \le 1.24\ \text{MPa}$ (`12.4 bar`) singularity guards.
+  - `livengood_wu.py`: Vectorized Livengood-Wu (1955) auto-ignition integral solver (`solve_livengood_wu`, `livengood_wu_integral`, `LivengoodWuResult`) on dynamic in-cylinder pressure and temperature histories. Features Hermite cubic sub-grid interpolation for off-node SOI injection angles, exact machine-precision root solving ($I(\theta_{\text{SOC}}) = 1.0$), and high-altitude misfire detection ($I(\theta) < 1.0$).
+  - `cfd_detector.py`: Multi-criteria chronological ignition detector (`extract_cfd_ignition_metrics`, `CFDIgnitionMetrics`) resolving evaporative cooling trough energy ($Q_{\text{evap}}$ [J]), zero-crossing $\theta_{\text{SOC}}^{\text{AHRR0}}$, $\text{CA01}$, $\text{CA02}$, $\text{CA05}$, and maximum pressure curvature $\theta_{\max(d^2P/d\theta^2)}$.
+  - Two-stage ignition cool-flame separator (`detect_two_stage_ignition`, `TwoStageIgnitionResult`) decomposing Low-Temperature Heat Release (LTHR), Negative Temperature Coefficient (NTC) dwell, and High-Temperature Heat Release (HTHR) peaks, with defensive single-stage false-positive prevention.
+- **`ice_cfd_validator.exergy` (Step 7 — Second-Law Thermodynamics & Exergy Budget)**:
+  - `dead_state.py`: Altitude-dependent thermodynamic dead-state generator (`DeadStateConditions.from_altitude`) via ISO 2533 extending from sea level through the $11\ \text{km}$ tropopause to the $15\ \text{km}$ isothermal stratosphere.
+  - Kotas (1995) fuel chemical exergy calculator (`compute_fuel_chemical_exergy`, `FuelChemicalExergy`) supporting mass ratio $h/c$, atomic ratio $(H/C)$ with NIST IUPAC atomic weights ($M_H = 1.00794, M_C = 12.0107$), and predefined fuel factors (`DIESEL_EN590_EXERGY_FACTOR`, `JET_A1_EXERGY_FACTOR`, `HYDROGEN_EXERGY_FACTOR`).
+  - `second_law.py`: Vectorized thermomechanical exergy engine (`compute_thermomechanical_exergy`) strictly positive-definite over $50 \times 50$ $(T, P)$ Gibbs convexity grids, with NASA RP-1311 14-coefficient polynomial entropy continuity ($|\Delta e_{\text{tm}}| < 0.01\ \text{J/kg}$ across $T = 1000\ \text{K}$) and exact Maxwell partial derivative identities.
+  - Closed-cycle Second-Law exergy rate and cumulative budget solver (`compute_exergy_rates`, `compute_exergy_cycle_budget`, `ExergyRatesResult`, `ExergyCycleBudget`) proving Gouy-Stodola theorem ($E_{\text{dest}} = T_0 S_{\text{gen}}$) closure within $5 \times 10^{-7}\ \text{J}$, 100.0000% closed-cycle budget closure with $< 10^{-9}\ \text{J}$ error, and high-altitude exhaust blowdown exergy recovery potential ($+24.87\%$ gain at $30{,}000\ \text{ft}$).
+- **Centralized Test Architecture & Pytest Markers (`tests/`)**:
+  - Consolidated 11 fragmented test scripts into 7 modular, standard-compliant test suites (`test_01` through `test_07`) sharing central fixtures (`conftest.py`: `standard_engine_geom`, `generate_synthetic_rk45_cycle`, `assert_package_vectorized_and_typed`).
+  - Configured custom pytest markers `unit` and `strict_audit` in `pyproject.toml` enabling fast unit runs (`pytest -m unit` in 4.35s) and rigorous analytical torture audits (`pytest -m strict_audit` in 19.62s).
+  - All 65 tests passing with zero explicit element-wise loops in numerical packages and 0 errors in `pyrefly check`.
+
 ## [0.1.0] - 2026-11-07
 
 ### Added
@@ -36,5 +55,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - 39 automated unit, analytical roundtrip, AST vectorization, memory-leak, and `pyrefly` static-typing audit tests under `tests/`.
   - Multi-version Ubuntu GitHub Actions workflow (`.github/workflows/ci_validation.yml`) for Python 3.11, 3.12, and 3.13.
 
+[0.2.0]: https://github.com/alpztel/ice-cfd-validation-assistant/releases/tag/v0.2.0
 [0.1.0]: https://github.com/alpztel/ice-cfd-validation-assistant/releases/tag/v0.1.0
-

@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "ice-cfd-validation-assistant"
-version = "0.1.0"
-description = "Open-source 0D/1D thermodynamic cycle diagnostics, high-altitude Aero-Diesel spray physics, and ASME V&V 20-2009 3D CFD validation toolkit for ANSYS Forte and Sandia ECN datasets."
+version = "0.2.0"
+description = "Open-source 0D/1D thermodynamic cycle diagnostics, Second-Law exergy budgets, high-altitude Aero-Diesel spray physics, auto-ignition kinetics, and ASME V&V 20-2009 3D CFD validation toolkit for ANSYS Forte and Sandia ECN datasets."
 readme = "README.md"
 requires-python = ">=3.11"
 license = { file = "LICENSE" }
@@ -28,6 +28,10 @@ keywords = [
     "grid-convergence-index",
     "verification-and-validation",
     "richardson-extrapolation",
+    "ignition-delay",
+    "livengood-wu",
+    "exergy-analysis",
+    "second-law",
 ]
 classifiers = [
     "Development Status :: 4 - Beta",
@@ -77,6 +81,10 @@ ice_cfd_validator = ["py.typed"]
 testpaths = ["tests"]
 pythonpath = ["src"]
 addopts = "-ra -q --strict-markers"
+markers = [
+    "unit: Fast analytical and numerical unit tests for individual functions and classes",
+    "strict_audit: Rigorous mathematical, physical, and ASME/SAE standard torture audits",
+]
 
 [tool.pyrefly]
 project-includes = ["src", "tests", "examples"]
