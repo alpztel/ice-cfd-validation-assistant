@@ -41,7 +41,7 @@
    - $t = t_b$ kırılma anında tam $C^0$ sürekli **Hiroyasu & Arai (1990)** ve 5 adımlı vektörize Newton–Raphson ile makine hassasiyetinde çözülen **Naber & Siebers (1996) / Siebers (1999)** sprey penetrasyon modelleri.
    - İrtifa artışıyla düşen gaz yoğunluğunda ($\rho_g$) $(\rho_{g,1}/\rho_{g,2})^{0.25}$ aşırı penetrasyon ölçeklemesi, piston çanağı cidar çarpma başlangıç zamanı ($t_{\text{imp}}$) tespiti ve asenkron zaman serileri arasında `RMSE`, `MAPE`, bağıl $L_2$ ve $L_\infty$ doğrulama metrikleri.
 6. **ASME V&V 20-2009 / Celik vd. (2008) 3B Ağ Yakınsama İndeksi ve AMR Koruması (`vv/gci.py`):**
-   - 3B hücre sayısı veya ortalama hücre hacminden küpkök temsili ağ boyutu ($h_1 < h_2 < h_3$), $r < 1.3$ ASME standart uyarısı, eşit olmayan ağ oranları ($r_{21} \neq r_{32}$) için $q(p)$ transandantal sabit nokta / Brent çözücüsü ($\lvert p - g(p)\rvert \le 10^{-11}$), Richardson ekstrapolasyonu ($\phi_{\text{ext}}^{21}$), $\text{GCI}_{\text{fine}}^{21}$ ve ANSYS Forte **Adaptif Ağ İyileştirme (AMR)** kaynaklı salınımlı yakınsamada ($\epsilon_{32}/\epsilon_{21} < 0$) `NaN` hatasını önleyen $s = \operatorname{sgn}(\epsilon_{32}/\epsilon_{21})$ koruması.
+   - 3B hücre sayısı veya ortalama hücre hacminden küpkök temsili ağ boyutu ($h_1 < h_2 < h_3$), $r < 1.3$ ASME standart uyarısı, eşit olmayan ağ oranları ($r_{21} \neq r_{32}$) için $q(p)$ transandantal sabit nokta / Brent çözücüsü ($\lvert p - g(p)\rvert \le 10^{-11}$), Richardson ekstrapolasyonu ($\phi_{\text{ext}}^{21}$), $GCI_{\mathrm{fine}}^{21}$ ve ANSYS Forte **Adaptif Ağ İyileştirme (AMR)** kaynaklı salınımlı yakınsamada ($\epsilon_{32}/\epsilon_{21} < 0$) `NaN` hatasını önleyen $s = \operatorname{sgn}(\epsilon_{32}/\epsilon_{21})$ koruması.
 7. **300 DPI SAE / IEEE Akademik Görselleştirme (`plotting/`):**
    - Sunucu/CI uyumlu (*headless Agg*, sıfır `pyplot` bellek sızıntısı) STIX LaTeX tipografili 4 yayın kalitesinde grafik üreteci (`plot_thermo_diagnostics`, `plot_pv_log_diagram`, `plot_altitude_spray_comparison`, `plot_gci_convergence`).
 
@@ -96,7 +96,7 @@
 
 ### 4. Temperature-Dependent $\gamma(T)$, First-Law Thermodynamics, Heat Transfer & Knock (`ice_cfd_validator.thermo`)
 - **14-Coefficient (2 × 7-Term) NASA Glenn Polynomials (`nasa_polynomials.py`)**:
-  - Evaluates vectorized $c_p(T)$ [`J/(kg*K)`], $c_v(T)$ [`J/(kg*K)`], and $\gamma(T) = c_p(T)/c_v(T)$ [`-`] across `200–1000 K` and `1000–6000 K` using NASA RP-1311 / GRI-Mech 3.0 coefficients for $\text{N}_2, \text{O}_2, \text{Ar}, \text{CO}_2, \text{H}_2\text{O}$ with continuous ($C^0$) handoff at $T = 1000\ \text{K}$.
+  - Evaluates vectorized $c_p(T)$ [`J/(kg*K)`], $c_v(T)$ [`J/(kg*K)`], and $\gamma(T) = c_p(T)/c_v(T)$ [`-`] across `200–1000 K` and `1000–6000 K` using NASA RP-1311 / GRI-Mech 3.0 coefficients for $\mathrm{N_2, O_2, Ar, CO_2, H_2O}$ with continuous ($C^0$) handoff at $T = 1000\ \text{K}$.
   - Ships with ready-to-use `DRY_AIR` ($\phi = 0.0$), `DIESEL_BURNED_PRODUCTS` ($n\text{-}\mathrm{C_{12}H_{26}}$ Aero-Diesel surrogate at $\phi = 0.7$), `STOICHIOMETRIC_PRODUCTS` ($\phi = 1.0$), plus `mix_nasa_species` and `make_combustion_mixture(equivalence_ratio, h_c_ratio)` builders.
 - **Convective Wall Heat-Transfer Correlations (`heat_transfer.py`)**:
   - **Woschni (1967, SAE 670931)** (`WoschniCorrelation`, `compute_woschni_heat_transfer`): Incorporates cylinder bore $B^{-0.2}$, mean piston speed $\bar{S}_p$, swirl velocity $v_u$, and combustion-induced turbulence velocity $C_2 (V_d T_r / P_r V_r) \max(P - P_m, 0)$.
@@ -105,7 +105,7 @@
   - `compute_heat_release`: Computes Apparent Net Heat Release Rate ($dQ_n/d\theta$ [`J/deg`]), Gross Chemical Heat Release Rate ($dQ_{\text{gross}}/d\theta = dQ_n/d\theta + dQ_{ht}/d\theta$ [`J/deg`]), and exact cubic-spline cumulative heat release ($Q_n(\theta), Q_{\text{gross}}(\theta)$ [`J`]).
   - `extract_burn_fractions`: Resolves sub-degree `CA10`, `CA50`, `CA90`, 10–90% combustion duration $\Delta\theta_{10\text{–}90}$, and normalized Mass Fraction Burned $x_b(\theta)$ via continuous cubic-spline root-finding.
   - `compute_imep`: Integrates $\oint P\,dV$ via cubic splines to report Gross `IMEP` ($[-180^\circ, +180^\circ]$), full-cycle Net `IMEP`, Pumping Mean Effective Pressure (`PMEP`), and gross/net indicated work [`J`].
-  - `compute_knock_metrics`: Quantifies Maximum Amplitude of Pressure Oscillations (`MAPO` [`Pa`]), peak pressure-rise rate $(dP/d\theta)_{\max}$ [`Pa/deg`], and **Eng (2002, SAE 2002-01-2859) Ringing Intensity** ($RI$ [`W/m^2`]) using either zero-phase `4–20 kHz` bandpass filtering (when Nyquist sampling $f_s > 2 f_{\text{high}}$ holds) or Eng's pressure-rise correlation $\Delta P_{\max} = \beta (dP/dt)_{\max}$.
+  - `compute_knock_metrics`: Quantifies Maximum Amplitude of Pressure Oscillations (`MAPO` [`Pa`]), peak pressure-rise rate $\max(dP/d\theta)$ [`Pa/deg`], and **Eng (2002, SAE 2002-01-2859) Ringing Intensity** ($RI$ [`W/m^2`]) using either zero-phase `4–20 kHz` bandpass filtering (when Nyquist sampling $f_s > 2 f_{\text{high}}$ holds) or Eng's pressure-rise correlation $\Delta P_{\max} = \beta \max(dP/dt)$.
 
 ### 5. ISO 2533 Atmosphere & High-Altitude Aero-Diesel Spray Physics (`constants.py` & `spray/`)
 - **ISO 2533 International Standard Atmosphere (`compute_isa_conditions`)**:
@@ -125,14 +125,14 @@
   - Classifies `MONOTONIC` ($0 < R < 1$), `OSCILLATORY` ($R < 0$), and `DIVERGENT` ($R \ge 1$) regimes.
   - Prevents `NaN` crashes on oscillatory **ANSYS Forte Adaptive Mesh Refinement (AMR)** triplets ($\epsilon_{32}/\epsilon_{21} < 0$) using Celik et al. (2008) sign factor $s = \operatorname{sgn}(\epsilon_{32}/\epsilon_{21})$ and overflow/cancellation-safe `logaddexp`/`expm1` evaluation of $q(p)$.
   - Solves the transcendental non-uniform apparent order $p$ equation via primary-branch Aitken $\Delta^2$ acceleration (`scipy.optimize.fixed_point`) backed by 1024-point bracketed Brent root-finding (`brentq`) to $\lvert p - g(p)\rvert \le 10^{-11}$.
-  - Reports $\phi_{\text{ext}}^{21}, \phi_{\text{ext}}^{32}$, $e_a^{21}, e_a^{32}, e_{\text{ext}}^{21}$, $\text{GCI}_{\text{fine}}^{21}, \text{GCI}_{32}$ ($F_s = 1.25$), Roache asymptotic ratio, and scale-invariant error-coefficient asymptotic ratio.
-
+  - Reports $\phi_{\text{ext}}^{21}, \phi_{\text{ext}}^{32}$, $e_a^{21}, e_a^{32}, e_{\text{ext}}^{21}$, $GCI_{\mathrm{fine}}^{21}, GCI_{32}$ ($F_s = 1.25$), Roache asymptotic ratio, and scale-invariant error-coefficient asymptotic ratio.
+  
 ### 7. Headless 300-DPI SAE / IEEE Publication Visualizers (`ice_cfd_validator.plotting`)
 - Built directly on `matplotlib.figure.Figure` + `FigureCanvasAgg` without touching global `pyplot` state (zero memory leaks across batch sweeps; 100% compatible with headless Linux clusters and GitHub Actions):
   - `plot_thermo_diagnostics`: 3-row shared crank-angle ($\theta$) panel ($P$ [`MPa`], Net/Gross $dQ/d\theta$ [`J/deg`] with shaded wall heat loss, and `MFB` [`%`] with `CA10`/`CA50`/`CA90` callouts and multi-altitude `ThermoOverlayTrace` support).
   - `plot_pv_log_diagram`: $\log_{10}(P) - \log_{10}(V/V_{\max})$ indicator diagram with automatic linear least-squares regression of compression ($\kappa_{\text{comp}}$) and expansion ($\kappa_{\text{exp}}$) polytropic exponents.
   - `plot_altitude_spray_comparison`: Multi-altitude spray penetration vs. time [`ms`] overlaying Hiroyasu–Arai, Siebers (1999), discrete ANSYS Forte CFD markers, $t_{\text{imp}}$ callouts, and shaded bowl-wall impingement zone ($S \ge L_{\text{wall}}$).
-  - `plot_gci_convergence`: ASME V&V 20-2009 three-mesh convergence chart with continuous apparent-order ($p$) Richardson curve to $h/h_1 \to 0$, $\phi_{\text{ext}}^{21}$ asymptote, $\pm\text{GCI}_{\text{fine}}^{21}$ / $\pm\text{GCI}_{32}$ error bars, and collision-free summary box placement.
+  - `plot_gci_convergence`: ASME V&V 20-2009 three-mesh convergence chart with continuous apparent-order ($p$) Richardson curve to $h/h_1 \to 0$, $\phi_{\text{ext}}^{21}$ asymptote, $\pm GCI_{\mathrm{fine}}^{21}$ / $\pm GCI_{32}$ error bars, and collision-free summary box placement.
 
 ---
 
@@ -271,7 +271,7 @@ $$
 
 Executing `python examples/altitude_sweep_demo.py` runs an end-to-end 4-stroke turbocharged Aero-Diesel flight-envelope sweep ($B = 85\ \text{mm}$, $S = 90\ \text{mm}$, $l = 155\ \text{mm}$, $r_c = 16.5$, $N = 2400\ \text{rpm}$, $\Delta P_{\text{inj}} = 100\ \text{MPa}$, $d_o = 90\ \mu\text{m}$, piston-bowl wall limit $L_{\text{wall}} = 38.0\ \text{mm}$) and exports four 300-DPI SAE/IEEE diagnostic figures:
 
-| Altitude Scenario (ISO 2533) | $P_{\text{amb}}$ [kPa] | $\rho_{g,\text{SOI}}$ [kg/m³] | $P_{\max}$ [MPa] | $\text{IMEP}_n$ [bar] | $\text{CA50}$ [deg] | $S_{\max}$ [mm] | Bowl Wall ($L_{\text{wall}}=38\ \text{mm}$) | Apparent Order $p$ | $\text{GCI}_{\text{fine}}^{21}$ |
+| Altitude Scenario (ISO 2533) | $P_{\text{amb}}$ [kPa] | $\rho_{g,\text{SOI}}$ [kg/m³] | $P_{\max}$ [MPa] | $IMEP_n$ [bar] | $\text{CA50}$ [deg] | $S_{\max}$ [mm] | Bowl Wall ($L_{\text{wall}}=38\ \text{mm}$) | Apparent Order $p$ | $GCI_{\mathrm{fine}}^{21}$ |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Sea Level (`0 ft` / `0 m`)** | `101.33` | `36.73` | `13.37` | `10.59` | `10.15` | `33.1` | **SAFE** | `1.920` | `1.072%` |
 | **Medium Cruise (`15,000 ft` / `4,572 m`)** | `57.18` | `21.72` | `9.17` | `10.31` | `11.13` | `37.8` | **SAFE (Marginal)** | `1.920` | `1.072%` |
