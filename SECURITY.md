@@ -16,3 +16,4 @@ If you discover a security issue (for example, unsafe file parsing or arbitrary 
 ## Strict NDA & Intellectual Property Hygiene
 
 `ice-cfd-validation-assistant` is an open-source academic and engineering verification library. Contributors and users opening issues or pull requests must **never** attach proprietary engine CAD geometries, OEM calibration tables, or confidential test-cell logs. Always reproduce bugs using synthetic analytical curves or open [Engine Combustion Network (ECN)](https://ecn.sandia.gov/) datasets.
+

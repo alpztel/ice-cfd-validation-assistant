@@ -447,7 +447,7 @@ def _solve_apparent_order_celik(
             float(p_scan[idx + 1]),
             xtol=min(tol * 0.01, 1.0e-14),
             rtol=1.0e-14,
-            maxiter=max_iter,
+            maxiter=np.intp(max_iter),
             full_output=False,
         )
         p_sol = float(brent_out[0] if isinstance(brent_out, tuple) else brent_out)

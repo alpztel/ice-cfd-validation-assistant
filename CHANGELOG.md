@@ -37,3 +37,4 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Multi-version Ubuntu GitHub Actions workflow (`.github/workflows/ci_validation.yml`) for Python 3.11, 3.12, and 3.13.
 
 [0.1.0]: https://github.com/alpztel/ice-cfd-validation-assistant/releases/tag/v0.1.0
+

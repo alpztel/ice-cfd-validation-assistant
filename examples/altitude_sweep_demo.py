@@ -160,8 +160,8 @@ def simulate_aero_diesel_altitude_case(
 
     # Forward closed-cycle First-Law ODE integration:
     # dP/dtheta = ((gamma(T)-1)/V) * (dQ_ch/dtheta - dQ_ht/dtheta) - gamma(T)*(P/V)*(dV/dtheta)
-    def cycle_ode(th: float, state: list[float]) -> list[float]:
-        p_curr = max(state[0], 1.0e3)
+    def cycle_ode(th: float, state: FloatArray) -> list[float]:
+        p_curr = max(float(state[0]), 1.0e3)
         th_arr = np.array([th], dtype=np.float64)
         k_pt = geom.evaluate(th_arr)
         v_curr = float(k_pt.volume_m3[0])

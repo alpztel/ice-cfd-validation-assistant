@@ -6,6 +6,7 @@ import ast
 from pathlib import Path
 
 import numpy as np
+from numpy.typing import NDArray
 import pytest
 from scipy.integrate import simpson, solve_ivp
 
@@ -160,8 +161,8 @@ def test_audit_3_forward_ode_to_inverse_ahrr_energy_conservation() -> None:
             * float(np.exp(exponent))
         )
 
-    def forward_ode_rhs(th: float, y: list[float]) -> list[float]:
-        p_curr = y[0]
+    def forward_ode_rhs(th: float, y: NDArray[np.float64]) -> list[float]:
+        p_curr = float(y[0])
         kin_pt = geom.evaluate(np.array([th], dtype=np.float64))
         v_curr = float(kin_pt.volume_m3[0])
         dv_curr = float(kin_pt.dv_dtheta_m3_per_deg[0])

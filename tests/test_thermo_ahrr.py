@@ -5,6 +5,7 @@ from __future__ import annotations
 from io import StringIO
 
 import numpy as np
+from numpy.typing import NDArray
 import pytest
 from scipy.integrate import solve_ivp
 from scipy.signal import butter, lfilter, lfilter_zi
@@ -122,8 +123,8 @@ def test_zero_phase_filtering_preserves_wiebe_ca50_under_noise() -> None:
             * float(np.exp(-wiebe_a * (u ** (wiebe_m + 1.0))))
         )
 
-    def rhs(th: float, y: list[float]) -> list[float]:
-        p_val = y[0]
+    def rhs(th: float, y: NDArray[np.float64]) -> list[float]:
+        p_val = float(y[0])
         kin_pt = geom.evaluate(np.array([th], dtype=np.float64))
         v_val = float(kin_pt.volume_m3[0])
         dv_val = float(kin_pt.dv_dtheta_m3_per_deg[0])
