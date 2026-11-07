@@ -41,7 +41,7 @@
    - $t = t_b$ kırılma anında tam $C^0$ sürekli **Hiroyasu & Arai (1990)** ve 5 adımlı vektörize Newton–Raphson ile makine hassasiyetinde çözülen **Naber & Siebers (1996) / Siebers (1999)** sprey penetrasyon modelleri.
    - İrtifa artışıyla düşen gaz yoğunluğunda ($\rho_g$) $(\rho_{g,1}/\rho_{g,2})^{0.25}$ aşırı penetrasyon ölçeklemesi, piston çanağı cidar çarpma başlangıç zamanı ($t_{\text{imp}}$) tespiti ve asenkron zaman serileri arasında `RMSE`, `MAPE`, bağıl $L_2$ ve $L_\infty$ doğrulama metrikleri.
 6. **ASME V&V 20-2009 / Celik vd. (2008) 3B Ağ Yakınsama İndeksi ve AMR Koruması (`vv/gci.py`):**
-   - 3B hücre sayısı veya ortalama hücre hacminden küpkök temsili ağ boyutu ($h_1 < h_2 < h_3$), $r < 1.3$ ASME standart uyarısı, eşit olmayan ağ oranları ($r_{21} \neq r_{32}$) için $q(p)$ transandantal sabit nokta / Brent çözücüsü ($\lvert p - g(p)\rvert \le 10^{-11}$), Richardson ekstrapolasyonu ($\phi_{\text{ext}}^{21}$), $GCI_{\mathrm{fine}}^{21}$ ve ANSYS Forte **Adaptif Ağ İyileştirme (AMR)** kaynaklı salınımlı yakınsamada ($\epsilon_{32}/\epsilon_{21} < 0$) `NaN` hatasını önleyen $s = \operatorname{sgn}(\epsilon_{32}/\epsilon_{21})$ koruması.
+   - 3B hücre sayısı veya ortalama hücre hacminden küpkök temsili ağ boyutu ($h_1 < h_2 < h_3$), $r < 1.3$ ASME standart uyarısı, eşit olmayan ağ oranları ($r_{21} \neq r_{32}$) için $q(p)$ transandantal sabit nokta / Brent çözücüsü ($\lvert p - g(p)\rvert \le 10^{-11}$), Richardson ekstrapolasyonu ($\phi_{\text{ext}}^{21}$), $GCI_{\mathrm{fine}}^{21}$ ve ANSYS Forte **Adaptif Ağ İyileştirme (AMR)** kaynaklı salınımlı yakınsamada ($\epsilon_{32}/\epsilon_{21} < 0$) `NaN` hatasını önleyen $s = \mathrm{sgn}(\epsilon_{32}/\epsilon_{21})$ koruması.
 7. **300 DPI SAE / IEEE Akademik Görselleştirme (`plotting/`):**
    - Sunucu/CI uyumlu (*headless Agg*, sıfır `pyplot` bellek sızıntısı) STIX LaTeX tipografili 4 yayın kalitesinde grafik üreteci (`plot_thermo_diagnostics`, `plot_pv_log_diagram`, `plot_altitude_spray_comparison`, `plot_gci_convergence`).
 
@@ -123,7 +123,7 @@
   - Computes $h_i = (\Delta V_{\text{mean}, i})^{1/3}$ [`m`], $h_i = (V_{\text{domain}} / N_i)^{1/3}$ [`m`], or normalized $h_i = (N_1 / N_i)^{1/3}$ [`-`], enforces strict Fine $<$ Medium $<$ Coarse ordering ($h_1 < h_2 < h_3$), and warns automatically when $r_{21} < 1.3$ or $r_{32} < 1.3$ per ASME V&V 20-2009.
 - **Non-Uniform & AMR-Safe GCI Solver (`compute_gci`)**:
   - Classifies `MONOTONIC` ($0 < R < 1$), `OSCILLATORY` ($R < 0$), and `DIVERGENT` ($R \ge 1$) regimes.
-  - Prevents `NaN` crashes on oscillatory **ANSYS Forte Adaptive Mesh Refinement (AMR)** triplets ($\epsilon_{32}/\epsilon_{21} < 0$) using Celik et al. (2008) sign factor $s = \operatorname{sgn}(\epsilon_{32}/\epsilon_{21})$ and overflow/cancellation-safe `logaddexp`/`expm1` evaluation of $q(p)$.
+  - Prevents `NaN` crashes on oscillatory **ANSYS Forte Adaptive Mesh Refinement (AMR)** triplets ($\epsilon_{32}/\epsilon_{21} < 0$) using Celik et al. (2008) sign factor $s = \mathrm{sgn}(\epsilon_{32}/\epsilon_{21})$ and overflow/cancellation-safe `logaddexp`/`expm1` evaluation of $q(p)$.
   - Solves the transcendental non-uniform apparent order $p$ equation via primary-branch Aitken $\Delta^2$ acceleration (`scipy.optimize.fixed_point`) backed by 1024-point bracketed Brent root-finding (`brentq`) to $\lvert p - g(p)\rvert \le 10^{-11}$.
   - Reports $\phi_{\text{ext}}^{21}, \phi_{\text{ext}}^{32}$, $e_a^{21}, e_a^{32}, e_{\text{ext}}^{21}$, $GCI_{\mathrm{fine}}^{21}, GCI_{32}$ ($F_s = 1.25$), Roache asymptotic ratio, and scale-invariant error-coefficient asymptotic ratio.
   
@@ -258,7 +258,7 @@ $$
 Given three systematically refined 3D meshes ($0 < h_1 < h_2 < h_3$, $r_{21} = h_2/h_1 \ge 1.3$, $r_{32} = h_3/h_2 \ge 1.3$) with scalar quantities $(\phi_1, \phi_2, \phi_3)$, $\epsilon_{21} = \phi_2 - \phi_1$, and $\epsilon_{32} = \phi_3 - \phi_2$:
 
 $$
-p = \frac{1}{\ln(r_{21})} \left\lvert \ln\left\lvert\frac{\epsilon_{32}}{\epsilon_{21}}\right\rvert + q(p) \right\rvert, \qquad q(p) = \ln\left(\frac{r_{21}^p - s}{r_{32}^p - s}\right), \qquad s = \operatorname{sgn}\left(\frac{\epsilon_{32}}{\epsilon_{21}}\right)
+p = \frac{1}{\ln(r_{21})} \left\lvert \ln\left\lvert\frac{\epsilon_{32}}{\epsilon_{21}}\right\rvert + q(p) \right\rvert, \qquad q(p) = \ln\left(\frac{r_{21}^p - s}{r_{32}^p - s}\right), \qquad s = \mathrm{sgn}\left(\frac{\epsilon_{32}}{\epsilon_{21}}\right)
 $$
 
 $$
