@@ -285,8 +285,8 @@ T_{11} = 216.65\ \mathrm{K}, & z > 11{,}000\ \mathrm{m}
 \qquad
 P_{\mathrm{amb}}(z) =
 \begin{cases}
-P_0 \left(\dfrac{T_{\mathrm{amb}}(z)}{T_0}\right)^{\frac{g_0}{R_{\mathrm{air}} L}}, & z \le 11{,}000\ \mathrm{m} \\
-P_{11} \exp\left(-\dfrac{g_0 (z - 11{,}000)}{R_{\mathrm{air}} T_{11}}\right), & z > 11{,}000\ \mathrm{m}
+P_0 \left(\frac{T_{\mathrm{amb}}(z)}{T_0}\right)^{\frac{g_0}{R_{\mathrm{air}} L}}, & z \le 11{,}000\ \mathrm{m} \\
+P_{11} \exp\left(-\frac{g_0 (z - 11{,}000)}{R_{\mathrm{air}} T_{11}}\right), & z > 11{,}000\ \mathrm{m}
 \end{cases}
 $$
 
@@ -295,8 +295,8 @@ As altitude increases and in-cylinder gas density at injection ($\rho_g$) decrea
 $$
 t_b = 28.65 \frac{\rho_l d_o}{\sqrt{\rho_g \Delta P}}, \qquad S(t) =
 \begin{cases}
-c_{\mathrm{pre}} \left(\dfrac{2 \Delta P}{\rho_l}\right)^{0.5} t, & t < t_b \\
-2.95 \left(\dfrac{\Delta P}{\rho_g}\right)^{0.25} (d_o t)^{0.5}, & t \ge t_b
+c_{\mathrm{pre}} \left(\frac{2 \Delta P}{\rho_l}\right)^{0.5} t, & t < t_b \\
+2.95 \left(\frac{\Delta P}{\rho_g}\right)^{0.25} (d_o t)^{0.5}, & t \ge t_b
 \end{cases}
 $$
 
@@ -378,11 +378,11 @@ $$
 
 Executing `python examples/altitude_sweep_demo.py` runs an end-to-end 4-stroke turbocharged Aero-Diesel flight-envelope sweep ($B = 85\ \text{mm}$, $S = 90\ \text{mm}$, $l = 155\ \text{mm}$, $r_c = 16.5$, $N = 2400\ \text{rpm}$, $\Delta P_{\text{inj}} = 100\ \text{MPa}$, $d_o = 90\ \mu\text{m}$, piston-bowl wall limit $L_{\text{wall}} = 38.0\ \text{mm}$) and exports four 300-DPI SAE/IEEE diagnostic figures:
 
-| Altitude Scenario (ISO 2533) | $P_{\text{amb}}$ [kPa] | $\rho_{g,\text{SOI}}$ [kg/m³] | $P_{\max}$ [MPa] | $IMEP_n$ [bar] | $\text{CA50}$ [deg] | $S_{\max}$ [mm] | Bowl Wall ($L_{\text{wall}}=38\ \text{mm}$) | Apparent Order $p$ | $GCI_{\mathrm{fine}}^{21}$ |
+| Altitude Scenario (ISO 2533) | $P_{\text{amb}}$ [kPa] | $\rho_{g,\text{SOI}}$ [kg/m³] | $P_{\max}$ [MPa] | $IMEP_n$ [bar] | $\text{CA50}$ [deg] | $\tau_{\mathrm{id}}$ [deg / ms] | $\theta_{\mathrm{SOC}}^{\mathrm{LW}}$ [deg] | $S_{\max}$ [mm] | Bowl Wall ($L_{\text{wall}}=38\ \text{mm}$) | $\eta_{\mathrm{II}}$ [%] | $GCI_{\mathrm{fine}}^{21}$ |
 | :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
-| **Sea Level (`0 ft` / `0 m`)** | `101.33` | `36.73` | `13.37` | `10.59` | `10.15` | `33.1` | **SAFE** | `1.920` | `1.072%` |
-| **Medium Cruise (`15,000 ft` / `4,572 m`)** | `57.18` | `21.72` | `9.17` | `10.31` | `11.13` | `37.8` | **SAFE (Marginal)** | `1.920` | `1.072%` |
-| **High Altitude (`30,000 ft` / `9,144 m`)** | `30.09` | `11.87` | `5.79` | `8.13` | `12.53` | `44.0` | **IMPINGEMENT (`t = 0.64 ms`)** | `1.920` | `1.072%` |
+| **Sea Level (`0 ft` / `0 m`)** | `101.33` | `36.73` | `13.37` | `10.59` | `10.15` | `4.5° / 0.31 ms` | `-3.47°` | `33.1` | **SAFE** | `47.94%` | `1.072%` |
+| **Medium Cruise (`15,000 ft` / `4,572 m`)** | `57.18` | `21.72` | `9.17` | `10.31` | `11.13` | `7.4° / 0.51 ms` | `-0.59°` | `37.8` | **SAFE (Marginal)** | `46.67%` | `1.072%` |
+| **High Altitude (`30,000 ft` / `9,144 m`)** | `30.09` | `11.87` | `5.79` | `8.13` | `12.53` | `11.7° / 0.81 ms` | `+3.73°` | `44.0` | **IMPINGEMENT (`t = 0.64 ms`)** | `44.50%` | `1.072%` |
 
 ### 1. First-Law Thermodynamic Cycle Diagnostics (P, Net/Gross AHRR, MFB)
 ![0D/1D First-Law Thermodynamic Cycle Diagnostics](assets/thermo_diagnostics.png)

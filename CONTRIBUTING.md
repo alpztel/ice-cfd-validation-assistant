@@ -13,11 +13,11 @@ Thank you for contributing to **`ice-cfd-validation-assistant`**. Because this t
   2. Publicly licensed open-science datasets such as the **Sandia Engine Combustion Network (ECN)** Spray A / Spray D archives.
 
 ### 1.2 Strict SI Internal Architecture
-- Every internal physics kernel (`signal/`, `thermo/`, `spray/`, `vv/`, `constants.py`) must accept and return **strict SI base/derived units** (`Pa`, `m`, `m^2`, `m^3`, `K`, `kg`, `kg/m^3`, `s`, `J`, `W/m^2`) with explicit crank-angle conventions (`deg` vs. `rad` documented in parameter names such as `crank_angle_deg`, `dv_dtheta_m3_per_deg`).
+- Every internal physics kernel (`signal/`, `thermo/`, `spray/`, `vv/`, `ignition/`, `exergy/`, `constants.py`) must accept and return **strict SI base/derived units** (`Pa`, `m`, `m^2`, `m^3`, `K`, `kg`, `kg/m^3`, `s`, `J`, `W/m^2`) with explicit crank-angle conventions (`deg` vs. `rad` documented in parameter names such as `crank_angle_deg`, `dv_dtheta_m3_per_deg`).
 - Unit conversions (`MPa -> Pa`, `bar -> Pa`, `dyne/cm^2 -> Pa`, `cm^3 -> m^3`, `mm -> m`, `ms -> s`, `degC -> K`, `erg/CA -> J/deg`) happen **exclusively at ingestion (`io/`) or display (`plotting/`) boundaries**.
 
 ### 1.3 Vectorization (Zero Element-Wise Loops)
-- Numerical modules (`signal/`, `thermo/`, `spray/`, `vv/`, `constants.py`) are audited via Python's `ast` module in `tests/test_strict_audit_step1_2.py` and `tests/test_strict_audit_step3_4_5.py`.
+- Numerical modules (`signal/`, `thermo/`, `spray/`, `vv/`, `ignition/`, `exergy/`, `constants.py`) are audited via Python's `ast` module across `tests/test_01_io_and_constants.py` through `tests/test_07_exergy_second_law.py`.
 - Element-wise Python `for` or `while` loops over crank-angle, time, temperature, or mesh arrays are **strictly forbidden** — use vectorized `numpy` broadcasting, `np.where`, `scipy.interpolate.CubicSpline`, and `scipy.signal.sosfiltfilt`.
 
 ### 1.4 Static Type Safety & Documentation
@@ -52,7 +52,7 @@ Before opening a Pull Request, run all three checks from the repository root:
 # 1. Static type checking (must report 0 errors)
 pyrefly check
 
-# 2. Analytical & strict physical audit suite (all 39+ tests must pass)
+# 2. Analytical & strict physical audit suite (all 65 tests must pass)
 pytest -v
 
 # 3. Headless end-to-end showcase & 300-DPI figure generation smoke test

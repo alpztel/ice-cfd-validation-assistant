@@ -2,14 +2,16 @@
 
 Simulates an open-literature 4-stroke turbocharged Aero-Diesel single cylinder across
 three flight altitudes (Sea Level 0 ft, 15,000 ft, and 30,000 ft) using strictly
-non-proprietary textbook parameters:
+non-proprietary textbook parameters across seven coupled engineering disciplines:
   1. ISO 2533 International Standard Atmosphere (ISA) boundary scaling
   2. Closed-cycle First-Law ODE synthesis + zero-phase filtering + Heywood AHRR,
      CA10/CA50/CA90 combustion phasing, and indicated mean effective pressure (IMEP)
   3. High-altitude Jet-A1/Diesel spray penetration scaling (Hiroyasu-Arai 1990 &
      Siebers 1999) and piston-bowl wall impingement risk detection
   4. Three-mesh ASME V&V 20-2009 / Celik et al. (2008) Grid Convergence Index (GCI)
-  5. Automated export of four 300-DPI SAE/IEEE publication figures into ``assets/``
+  5. Dynamic Livengood-Wu (1955) auto-ignition delay & sub-degree SOC prediction
+  6. Second-Law exergy budgets across altitude-varying dead states (P0(z), T0(z))
+  7. Automated export of four 300-DPI SAE/IEEE publication figures into ``assets/``
 """
 
 from __future__ import annotations
@@ -32,15 +34,21 @@ if str(_REPO_ROOT / "src") not in sys.path:
 from ice_cfd_validator import (  # noqa: E402
     DRY_AIR,
     FEET_TO_M,
+    PREDEFINED_FUELS,
     AltitudeSprayPlotCase,
     BurnFractionMetrics,
+    DeadStateConditions,
+    ExergyCycleBudget,
     GCIResult,
     HeatReleaseResult,
     IMEPResult,
+    LivengoodWuResult,
     SliderCrankGeometry,
     SprayValidationMetrics,
     ThermoOverlayTrace,
     WoschniCorrelation,
+    compute_exergy_cycle_budget,
+    compute_exergy_rates,
     compute_gci,
     compute_grid_size,
     compute_heat_release,
@@ -50,6 +58,7 @@ from ice_cfd_validator import (  # noqa: E402
     evaluate_altitude_spray_risk,
     extract_burn_fractions,
     hiroyasu_arai_penetration,
+    livengood_wu_integral,
     naber_siebers_penetration,
     plot_altitude_spray_comparison,
     plot_gci_convergence,
@@ -86,6 +95,8 @@ class AltitudeScenarioSummary:
     wall_impingement: bool
     impingement_time_ms: float | None
     gci: GCIResult
+    lw: LivengoodWuResult
+    exergy: ExergyCycleBudget
 
 
 def _wiebe_heat_rate_j_per_deg(
@@ -352,6 +363,41 @@ def simulate_aero_diesel_altitude_case(
     phi3_pa = p_peak_true + c_mesh * (grid_sizes.h3**1.92)
     gci_res = compute_gci(phi1_pa, phi2_pa, phi3_pa, grid=grid_sizes)
 
+    # Dynamic Livengood-Wu (1955) auto-ignition delay & SOC with Jet-A1 kinetics
+    jet_a1 = PREDEFINED_FUELS["JET_A1_JP8"]
+    phi_overall = float((injected_fuel_kg * afr_stoich) / trapped_mass_kg)
+    lw_res = livengood_wu_integral(
+        theta_deg,
+        p_filtered_pa,
+        t_filtered_k,
+        engine_speed_rpm,
+        theta_soi_deg=-8.0,
+        equivalence_ratio=phi_overall,
+        cetane_number=jet_a1.cetane_number,
+    )
+
+    # Second-Law exergy budget & altitude dead-state (P0(z), T0(z)) analysis
+    dead_state = DeadStateConditions.from_altitude(alt_m)
+    dq_ht_arr = np.maximum(hrr_res.dq_gross_j_per_deg - hrr_res.dq_net_j_per_deg, 0.0)
+    exergy_rates = compute_exergy_rates(
+        theta_deg,
+        p_filtered_pa,
+        t_filtered_k,
+        kin.volume_m3,
+        kin.dv_dtheta_m3_per_deg,
+        hrr_res.dq_gross_j_per_deg,
+        dq_ht_arr,
+        dead_state,
+        trapped_mass_kg,
+        wall_temperature_k=wall_temp_k,
+        gas_mixture=DRY_AIR,
+    )
+    exergy_budget = compute_exergy_cycle_budget(
+        exergy_rates,
+        fuel_mass_kg=injected_fuel_kg,
+        lhv_j_per_kg=lhv_jet_a1_j_per_kg,
+    )
+
     return AltitudeScenarioSummary(
         label=label_str,
         altitude_ft=altitude_ft,
@@ -378,30 +424,32 @@ def simulate_aero_diesel_altitude_case(
             else None
         ),
         gci=gci_res,
+        lw=lw_res,
+        exergy=exergy_budget,
     )
 
 
 def _print_summary_table(results: list[AltitudeScenarioSummary]) -> None:
-    """Print an engineering summary table of thermodynamic, spray, and GCI metrics."""
-    sep = "=" * 116
+    """Print an engineering summary table of thermodynamic, spray, ignition, exergy, and GCI metrics."""
+    sep = "=" * 140
     print("\n" + sep)
     print(
-        "  ICE-CFD-VALIDATION-ASSISTANT | AERO-DIESEL ALTITUDE SWEEP DIAGNOSTIC & V&V SUMMARY"
+        "  ICE-CFD-VALIDATION-ASSISTANT | AERO-DIESEL MULTI-PHYSICS ALTITUDE SWEEP & ASME V&V SUMMARY"
     )
     print(sep)
     header = (
-        f"{'Altitude Scenario':<22} | {'P_amb':>7} | {'rho_SOI':>7} | {'P_max':>7} | "
-        f"{'IMEP_n':>7} | {'CA50':>6} | {'S_max':>6} | {'Wall Imp.':>11} | "
-        f"{'Order p':>7} | {'GCI_fine':>8}"
+        f"{'Altitude Scenario':<20} | {'P_amb':>7} | {'rho_SOI':>7} | {'P_max':>6} | "
+        f"{'IMEP_n':>6} | {'CA50':>6} | {'tau_id':>10} | {'SOC_LW':>7} | "
+        f"{'S_max':>5} | {'Piston Bowl':>11} | {'eta_II':>7} | {'E_dest':>7} | {'GCI_fine':>8}"
     )
     units = (
-        f"{'(ISA ISO 2533)':<22} | {'[kPa]':>7} | {'[kg/m3]':>7} | {'[MPa]':>7} | "
-        f"{'[bar]':>7} | {'[deg]':>6} | {'[mm]':>6} | {'(L=38.0mm)':>11} | "
-        f"{'[-]':>7} | {'[%]':>8}"
+        f"{'(ISA ISO 2533)':<20} | {'[kPa]':>7} | {'[kg/m3]':>7} | {'[MPa]':>6} | "
+        f"{'[bar]':>6} | {'[deg]':>6} | {'[deg|ms]':>10} | {'[deg]':>7} | "
+        f"{'[mm]':>5} | {'(L=38mm)':>11} | {'[%]':>7} | {'[%]':>7} | {'[%]':>8}"
     )
     print(header)
     print(units)
-    print("-" * 116)
+    print("-" * 140)
 
     for r in results:
         p_max_mpa = float(np.max(r.pressure_pa)) * 1.0e-6
@@ -412,11 +460,13 @@ def _print_summary_table(results: list[AltitudeScenarioSummary]) -> None:
             if r.impingement_time_ms is not None
             else "SAFE"
         )
+        tau_str = f"{r.lw.ignition_delay_deg:.1f}d|{r.lw.ignition_delay_s * 1.0e3:.2f}m"
         print(
-            f"{r.label:<22} | {r.p_amb_kpa:7.2f} | {r.rho_soi_kg_m3:7.2f} | "
-            f"{p_max_mpa:7.2f} | {imep_bar:7.2f} | {r.burn.ca50_deg:6.2f} | "
-            f"{s_max_mm:6.1f} | {imp_str:>11} | {r.gci.apparent_order_p:7.3f} | "
-            f"{r.gci.gci_fine_21 * 100.0:7.3f}%"
+            f"{r.label:<20} | {r.p_amb_kpa:7.2f} | {r.rho_soi_kg_m3:7.2f} | "
+            f"{p_max_mpa:6.2f} | {imep_bar:6.2f} | {r.burn.ca50_deg:6.2f} | "
+            f"{tau_str:>10} | {r.lw.theta_soc_deg:7.2f} | "
+            f"{s_max_mm:5.1f} | {imp_str:>11} | {r.exergy.eta_second_law * 100.0:6.2f}% | "
+            f"{r.exergy.destruction_share_pct:6.2f}% | {r.gci.gci_fine_21 * 100.0:7.3f}%"
         )
     print(sep + "\n")
 
