@@ -19,7 +19,7 @@ If you discover a security issue (for example, unsafe file parsing, integer/floa
 
 `ice-cfd-validation-assistant` incorporates defensive programming across all physics routines:
 - **Strict Positivity Guards:** Spatially averaged cylinder pressure ($P > 0$), cylinder volume ($V > 0$), temperature ($T > 0$), trapped mass ($m > 0$), and AMR cell counts ($N_i > 0$) are strictly validated at ingestion to prevent non-physical floating-point overflows or square-root of negative numbers.
-- **Singularity Protection:** Hardenberg-Hase delay features an explicit guard for $P_{\text{TDC}} \le 1.24\ \text{MPa}$ (`12.4 bar`) to prevent logarithmic and fractional exponent singularities; ASME GCI incorporates Celik et al. (2008) sign factor $s = \mathrm{sgn}(\epsilon_{32}/\epsilon_{21})$ to safeguard against `NaN` crashes on oscillatory AMR mesh triplets; Livengood-Wu solver explicitly detects high-altitude subcritical misfire ($I(\theta) < 1.0$) returning `NaN` indicators rather than erroneous roots.
+- **Singularity Protection:** Hardenberg-Hase delay features an explicit guard for $`P_{\mathrm{TDC}} \le 1.24\ \mathrm{MPa}`$ ($12.4\ \mathrm{bar}$) to prevent logarithmic and fractional exponent singularities; ASME GCI incorporates Celik et al. (2008) sign factor $`s = \mathrm{sgn}(\epsilon_{32}/\epsilon_{21})`$ to safeguard against `NaN` crashes on oscillatory AMR mesh triplets; Livengood-Wu solver explicitly detects high-altitude subcritical misfire ($I(\theta) < 1.0$) returning `NaN` indicators rather than erroneous roots.
 - **Zero Memory Leaks:** Plotting routines run strictly headless via `FigureCanvasAgg` without contaminating the global `matplotlib.pyplot` state.
 
 ## Strict NDA & Intellectual Property Hygiene

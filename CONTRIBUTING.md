@@ -64,6 +64,6 @@ python examples/altitude_sweep_demo.py
 ## 4. Adding New Correlations or V&V Models
 
 1. Cite the primary peer-reviewed source (e.g., SAE Technical Paper number, ASME standard section, or NASA Technical Report) in both the module docstring and `CITATION.cff` / `README.md`.
-2. Add domain bounds validation raising `PhysicalBoundsError` from `ice_cfd_validator.exceptions` for non-physical inputs (e.g., $P \le 0$, $T \le 0$, $r_c \le 1$, $h_1 \ge h_2$).
+2. Add domain bounds validation raising `PhysicalBoundsError` from `ice_cfd_validator.exceptions` for non-physical inputs (e.g., $P \le 0$, $T \le 0$, $`r_c \le 1`$, $`h_1 \ge h_2`$).
 3. Include an analytical or asymptotic verification test in `tests/` proving machine-precision or theoretical order-of-accuracy convergence.
 

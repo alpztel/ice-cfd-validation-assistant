@@ -20,3 +20,44 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
+--------------------------------------------------------------------------------
+Third-Party Software, Scientific Datasets, and Standards Notices
+--------------------------------------------------------------------------------
+
+This project incorporates, depends upon, or benchmarks against third-party
+open-source software, public-domain scientific datasets, and published
+international standards under their respective permissive terms:
+
+1. Runtime and Development Dependencies:
+   - NumPy: BSD 3-Clause License
+     Copyright (c) 2005-2024, NumPy Developers.
+   - SciPy: BSD 3-Clause License
+     Copyright (c) 2001-2024, SciPy Developers.
+   - Pandas: BSD 3-Clause License
+     Copyright (c) 2008-2024, AQR Capital Management, LLC, Lambda Foundry, Inc. and PyData Development Team.
+   - Matplotlib: Python Software Foundation (PSF) / Matplotlib License (BSD-compatible)
+     Copyright (c) 2002-2024, John D. Hunter, Michael Droettboom and the Matplotlib development team.
+   - Pytest: MIT License
+     Copyright (c) 2004-2024, Holger Krekel and pytest-dev team.
+   - Pyrefly: MIT / Apache-2.0 License
+     Copyright (c) 2024, Meta Platforms, Inc.
+
+2. Public Scientific Data & Government Works:
+   - Sandia Engine Combustion Network (ECN) Datasets:
+     Public domain / Open Science datasets maintained by Sandia National Laboratories
+     for the U.S. Department of Energy National Nuclear Security Administration under
+     Contract DE-NA0003525. Freely available for non-commercial and commercial model
+     verification and validation research.
+   - NASA RP-1311 Thermodynamic Polynomials (McBride, Gordon, Reno):
+     Public domain, NASA Glenn Research Center / United States Government work
+     pursuant to 17 U.S.C. § 105 (free of domestic copyright restrictions).
+   - GRI-Mech 3.0 Methane/Natural Gas Combustion Reaction Mechanism:
+     Gas Research Institute / University of California, Berkeley.
+
+3. Published Engineering Standards:
+   - ASME V&V 20-2009: Standard for Verification and Validation in Computational Fluid
+     Dynamics and Heat Transfer (American Society of Mechanical Engineers).
+   - ISO 2533:1975: Standard Atmosphere (International Organization for Standardization).
+   Implemented as independent, original mathematical algorithms and numerical solvers
+   based strictly on published open equations, without reproducing proprietary text
+   or paywalled standard documentation.

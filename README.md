@@ -41,19 +41,19 @@
 5. **ISO 2533 Atmosfer, Yüksek İrtifa Aero-Dizel Sprey Fiziği ve Cidar Islanması Denetimi (`constants.py` & `spray/`):**
    - **ISO 2533** Uluslararası Standart Atmosfer modeliyle `-500 m` ila `20,000 m` (`≈ 65,617 ft`) arasında troposfer + izotermal alt stratosfer $T_{\text{amb}}(z)$, $P_{\text{amb}}(z)$, $\rho_{\text{amb}}(z)$ ve ses hızı $a(z)$ hesabı.
    - $t = t_b$ kırılma anında tam $C^0$ sürekli **Hiroyasu & Arai (1990)** ve 5 adımlı vektörize Newton–Raphson ile makine hassasiyetinde çözülen **Naber & Siebers (1996) / Siebers (1999)** sprey penetrasyon modelleri.
-   - İrtifa artışıyla düşen gaz yoğunluğunda ($\rho_g$) $(\rho_{g,1}/\rho_{g,2})^{0.25}$ aşırı penetrasyon ölçeklemesi, piston çanağı cidar çarpma başlangıç zamanı ($t_{\text{imp}}$) tespiti ve asenkron zaman serileri arasında `RMSE`, `MAPE`, bağıl $L_2$ ve $L_\infty$ doğrulama metrikleri.
+   - İrtifa artışıyla düşen gaz yoğunluğunda ($`\rho_g`$) ($`(\rho_{g,1}/\rho_{g,2})^{0.25}`$) aşırı penetrasyon ölçeklemesi, piston çanağı cidar çarpma başlangıç zamanı ($`t_{\mathrm{imp}}`$) tespiti ve asenkron zaman serileri arasında `RMSE`, `MAPE`, bağıl $`L_2`$ ve $`L_\infty`$ doğrulama metrikleri.
 6. **ASME V&V 20-2009 / Celik vd. (2008) 3B Ağ Yakınsama İndeksi ve AMR Koruması (`vv/gci.py`):**
-   - 3B hücre sayısı veya ortalama hücre hacminden küpkök temsili ağ boyutu ($h_1 < h_2 < h_3$), $r < 1.3$ ASME standart uyarısı, eşit olmayan ağ oranları ($r_{21} \neq r_{32}$) için $q(p)$ transandantal sabit nokta / Brent çözücüsü ($\lvert p - g(p)\rvert \le 10^{-11}$), Richardson ekstrapolasyonu ($\phi_{\text{ext}}^{21}$), $GCI_{\mathrm{fine}}^{21}$ ve ANSYS Forte **Adaptif Ağ İyileştirme (AMR)** kaynaklı salınımlı yakınsamada ($\epsilon_{32}/\epsilon_{21} < 0$) `NaN` hatasını önleyen $s = \mathrm{sgn}(\epsilon_{32}/\epsilon_{21})$ koruması.
+   - 3B hücre sayısı veya ortalama hücre hacminden küpkök temsili ağ boyutu ($`h_1 < h_2 < h_3`$), $r < 1.3$ ASME standart uyarısı, eşit olmayan ağ oranları ($`r_{21} \neq r_{32}`$) için $q(p)$ transandantal sabit nokta / Brent çözücüsü ($\lvert p - g(p)\rvert \le 10^{-11}$), Richardson ekstrapolasyonu ($`\phi_{\mathrm{ext}}^{21}`$), $`GCI_{\mathrm{fine}}^{21}`$ ve ANSYS Forte **Adaptif Ağ İyileştirme (AMR)** kaynaklı salınımlı yakınsamada ($`\epsilon_{32}/\epsilon_{21} < 0`$) `NaN` hatasını önleyen $`s = \mathrm{sgn}(\epsilon_{32}/\epsilon_{21})`$ koruması.
 7. **Yüksek İrtifa Oto-Tutuşma Kinetiği, Livengood-Wu İntegrali ve 3B CFD Tutuşma Tanılaması (`ignition/`):**
-   - **Wolfer (1938)**, **Assanis vd. (2003)** ve **Hardenberg & Hase (1979)** ampirik korelasyonları ile Dizel EN590 ve Havacılık Dizel/Jet-A1 ($CN = 40–55$) tutuşma gecikmesi hesabı; $P_{\text{TDC}} \le 1.24\ \text{MPa}$ (`12.4 bar`) tekillik koruması.
-   - Dinamik silindir içi basınç ve sıcaklık geçmişi üzerinde **Livengood-Wu (1955)** oto-tutuşma integrali $I(\theta) = \int_{\theta_{\text{SOI}}}^\theta \frac{d\theta'}{6 N \tau_{\text{id}}(P, T)}$ çözücüsü; düğüm arasına düşen küsuratlı püskürtme başlangıçlarında Hermite kübik spline ile alt-derece kök tespiti ($I = 1.0$) ve yüksek irtifa sönme ($I < 1.0$) tespiti.
-   - 3B CFD çıktılarından püskürtme buharlaşma soğuması çukuru ($Q_{\text{evap}}$ [J]), net AHRR sıfır geçişi $\theta_{\text{SOC}}^{\text{AHRR0}}$, $\text{CA01}$, $\text{CA02}$, $\text{CA05}$ ve maksimum basınç eğriliği $\theta_{\max(d^2P/d\theta^2)}$ kronolojisi; soğuk alev / düşük sıcaklık ısı yayılımı (LTHR), NTC bölgesi ve ana yanma (HTHR) ayrıştırması.
+   - **Wolfer (1938)**, **Assanis vd. (2003)** ve **Hardenberg & Hase (1979)** ampirik korelasyonları ile Dizel EN590 ve Havacılık Dizel/Jet-A1 ($CN = 40–55$) tutuşma gecikmesi hesabı; $`P_{\mathrm{TDC}} \le 1.24\ \mathrm{MPa}`$ ($12.4\ \mathrm{bar}$) tekillik koruması.
+   - Dinamik silindir içi basınç ve sıcaklık geçmişi üzerinde **Livengood-Wu (1955)** oto-tutuşma integrali $`I(\theta) = \int_{\theta_{\mathrm{SOI}}}^\theta \frac{d\theta'}{6 N \tau_{\mathrm{id}}(P, T)}`$ çözücüsü; düğüm arasına düşen küsuratlı püskürtme başlangıçlarında Hermite kübik spline ile alt-derece kök tespiti ($I = 1.0$) ve yüksek irtifa sönme ($I < 1.0$) tespiti.
+   - 3B CFD çıktılarından püskürtme buharlaşma soğuması çukuru ($`Q_{\mathrm{evap}}`$ [$\mathrm{J}$]), net AHRR sıfır geçişi $`\theta_{\mathrm{SOC}}^{\mathrm{AHRR0}}`$, `CA01`, `CA02`, `CA05` ve maksimum basınç eğriliği $`\theta_{\max(d^2P/d\theta^2)}`$ kronolojisi; soğuk alev / düşük sıcaklık ısı yayılımı (LTHR), NTC bölgesi ve ana yanma (HTHR) ayrıştırması.
 8. **Termodinamiğin 2. Yasası, İrtifaya Bağlı Ölü Hal ve Ekserji Bütçesi (`exergy/`):**
-   - ISO 2533 ISA atmosfer modeliyle deniz seviyesinden $15{,}000\ \text{m}$ stratosfere kadar irtifaya bağlı ölü hal $(P_0(z), T_0(z), \rho_0(z))$.
+   - ISO 2533 ISA atmosfer modeliyle deniz seviyesinden $15{,}000\ \mathrm{m}$ stratosfere kadar irtifaya bağlı ölü hal $`(P_0(z), T_0(z), \rho_0(z))`$.
    - **Kotas (1995)** yakıt kimyasal ekserji faktörü $\varphi = 1.0401 + 0.1728 \cdot (h/c)$ (kütlesel ve atomik $H/C$ oranları, saf n-dodekan ve hidrojen desteği).
-   - Termomekanik ekserji $E_{\text{tm}} = m \cdot [(u - u_0) + P_0(v - v_0) - T_0(s - s_0)]$ ve $50 \times 50$ $(T, P)$ ızgarasında Gibbs konvekslik kesin pozitifliği ($E_{\text{tm}} \ge 0$).
-   - NASA RP-1311 14 katsayılı entropi sürekliliği ($T = 1000\ \text{K}$) ve analitik Maxwell türev özdeşliği.
-   - **Gouy-Stodola teoremi** ($E_{\text{dest}} = T_0 \cdot S_{\text{gen}}$) ile kontrol hacmi ekserji yıkım hızı entegrasyonu; kapalı çevrim II. Yasa ekserji bütçesi kapanışı ($\%100.0000$, bütçe hatası $< 10^{-9}\ \text{J}$) ve yüksek irtifa egzoz açılma (EVO) ekserji geri kazanım potansiyeli ($30{,}000\ \text{ft}$'te $+\%24.87$ artış).
+   - Termomekanik ekserji $`E_{\mathrm{tm}} = m \cdot [(u - u_0) + P_0(v - v_0) - T_0(s - s_0)]`$ ve $50 \times 50$ $(T, P)$ ızgarasında Gibbs konvekslik kesin pozitifliği ($`E_{\mathrm{tm}} \ge 0`$).
+   - NASA RP-1311 14 katsayılı entropi sürekliliği ($T = 1000\ \mathrm{K}$) ve analitik Maxwell türev özdeşliği.
+   - **Gouy-Stodola teoremi** ($`E_{\mathrm{dest}} = T_0 \cdot S_{\mathrm{gen}}`$) ile kontrol hacmi ekserji yıkım hızı entegrasyonu; kapalı çevrim II. Yasa ekserji bütçesi kapanışı ($\%100.0000$, bütçe hatası $< 10^{-9}\ \mathrm{J}$) ve yüksek irtifa egzoz açılma (EVO) ekserji geri kazanım potansiyeli ($30{,}000\ \mathrm{ft}$'te $+\%24.87$ artış).
 9. **300 DPI SAE / IEEE Akademik Görselleştirme (`plotting/`):**
    - Sunucu/CI uyumlu (*headless Agg*, sıfır `pyplot` bellek sızıntısı) STIX LaTeX tipografili 4 yayın kalitesinde grafik üreteci (`plot_thermo_diagnostics`, `plot_pv_log_diagram`, `plot_altitude_spray_comparison`, `plot_gci_convergence`).
 
@@ -97,11 +97,11 @@
 - **ANSYS Forte Monitor Parsers (`forte_parser.py`)**:
   - Automatically parses both **1-row inline-unit headers** (`Pressure [MPa]`, `Volume (cm^3)`) and **2-row ANSYS Forte headers** (variable name row + unit token row), handling UTF-8 BOMs (`utf-8-sig`), `#` comment lines, and Unicode superscripts/symbols (`cm³` → `cm^3`, `µm`/`μm` → `um`, `°C` → `C`).
   - `parse_thermo_csv`: Extracts crank angle ($\theta$ in both `deg` and `rad`), spatially averaged pressure ($P$ [`Pa`]), cylinder volume ($V$ [`m^3`]), mass-averaged temperature ($T$ [`K`]), simulation time ($t$ [`s`]), trapped mass ($m$ [`kg`]), and wall heat-loss rate ($dQ_{ht}/d\theta$ [`J/deg`]).
-  - `parse_spray_csv`: Extracts elapsed time ($t$ [`s`]), liquid-phase penetration ($S_L$ [`m`]), vapor-phase penetration ($S_V$ [`m`]), droplet Sauter Mean Diameter ($D_{32}$ [`m`]), crank angle (`deg`/`rad`), and cumulative injected fuel mass ($m_{\text{inj}}$ [`kg`]).
-  - `parse_dynamic_csv`: Extracts instantaneous active AMR cell count ($N_i$ [`-`]), crank angle (`deg`), time (`s`), mean cell volume ($\Delta V_{\text{mean}}$ [`m^3`]), and minimum AMR cell size ($\Delta x_{\min}$ [`m`]).
-  - Enforces strict thermodynamic positivity bounds ($P > 0$, $V > 0$, $T > 0$, $m > 0$, $N_i > 0$) upon load and records raw unit strings in `.source_units` for audit traceability.
+  - `parse_spray_csv`: Extracts elapsed time ($t$ [`s`]), liquid-phase penetration ($`S_L`$ [`m`]), vapor-phase penetration ($`S_V`$ [`m`]), droplet Sauter Mean Diameter ($`D_{32}`$ [`m`]), crank angle (`deg`/`rad`), and cumulative injected fuel mass ($`m_{\mathrm{inj}}`$ [`kg`]).
+  - `parse_dynamic_csv`: Extracts instantaneous active AMR cell count ($`N_i`$ [`-`]), crank angle (`deg`), time (`s`), mean cell volume ($`\Delta V_{\mathrm{mean}}`$ [`m^3`]), and minimum AMR cell size ($`\Delta x_{\min}`$ [`m`]).
+  - Enforces strict thermodynamic positivity bounds ($P > 0$, $V > 0$, $T > 0$, $m > 0$, $`N_i > 0`$) upon load and records raw unit strings in `.source_units` for audit traceability.
 - **Sandia ECN Experimental Benchmark Loader (`ecn_loader.py`)**:
-  - `load_ecn_spray_data`: Parses comma-delimited (`.csv`) and whitespace-delimited (`.txt`, `.dat`) **ECN Spray A / Spray D** tables with `#` or `%` metadata headers, automatically trims pre-SOI negative timestamps ($t < 0$), normalizes liquid and vapor penetration into meters, and preserves ensemble standard deviations ($\sigma_L, \sigma_V$ [`m`]) for ASME V&V 20-2009 experimental uncertainty ($u_D$) quantification.
+  - `load_ecn_spray_data`: Parses comma-delimited (`.csv`) and whitespace-delimited (`.txt`, `.dat`) **ECN Spray A / Spray D** tables with `#` or `%` metadata headers, automatically trims pre-SOI negative timestamps ($t < 0$), normalizes liquid and vapor penetration into meters, and preserves ensemble standard deviations ($`\sigma_L, \sigma_V`$ [`m`]) for ASME V&V 20-2009 experimental uncertainty ($`u_D`$) quantification.
 
 ### 2. Zero-Phase Signal Processing & $\mathcal{O}(\Delta\theta^4)$ Differentiation (`ice_cfd_validator.signal`)
 - **Zero-Phase Savitzky–Golay Filtering (`savgol_zero_phase`)**: Symmetric local polynomial smoothing that suppresses high-frequency pressure transducer or CFD AMR noise while maintaining **zero group delay**, preventing artificial `CA50` combustion-phasing shifts.
@@ -114,67 +114,67 @@
 ### 3. Slider-Crank Kinematics & Motored TDC Phasing Audit (`ice_cfd_validator.thermo.kinematics`)
 - **Centered & Wrist-Pin-Offset Kinematics (`SliderCrankGeometry`)**:
   - Computes exact instantaneous volume $V(\theta)$ [`m^3`], analytical volume derivative $dV/d\theta$ [`m^3/deg`] (explicitly incorporating the $\pi/180$ rad-to-deg Jacobian), axial piston displacement $s(\theta)$ [`m`], and exposed combustion-chamber surface area $A_w(\theta)$ [`m^2`] (with configurable piston-bowl `crown_area_multiplier`).
-  - Accounts for non-zero lateral wrist-pin offset ($e \neq 0$) in true extreme dead-center swept volume $V_d$ and clearance volume $V_c = V_d / (r_c - 1)$.
+  - Accounts for non-zero lateral wrist-pin offset ($e \neq 0$) in true extreme dead-center swept volume $`V_d`$ and clearance volume $`V_c = V_d / (r_c - 1)`$.
 - **Thermodynamic TDC Phasing Verification (`verify_tdc_phasing`)**:
-  - Locates sub-degree motored peak pressure ($\theta_{P_{\max}}$) and minimum geometric volume ($\theta_{V_{\min}}$) via local cubic-spline derivative root-finding, computes the thermodynamic heat-loss angle ($\theta_{V_{\min}} - \theta_{P_{\max}}$), and raises `TDCPhaseError` (or `UserWarning`) if encoder/mesh phase drift exceeds $\pm 0.5^\circ$ CA.
+  - Locates sub-degree motored peak pressure ($`\theta_{P_{\max}}`$) and minimum geometric volume ($`\theta_{V_{\min}}`$) via local cubic-spline derivative root-finding, computes the thermodynamic heat-loss angle ($`\theta_{V_{\min}} - \theta_{P_{\max}}`$), and raises `TDCPhaseError` (or `UserWarning`) if encoder/mesh phase drift exceeds $\pm 0.5^\circ$ CA.
 
 ### 4. Temperature-Dependent $\gamma(T)$, First-Law Thermodynamics, Heat Transfer & Knock (`ice_cfd_validator.thermo`)
 - **14-Coefficient (2 × 7-Term) NASA Glenn Polynomials (`nasa_polynomials.py`)**:
-  - Evaluates vectorized $c_p(T)$ [`J/(kg*K)`], $c_v(T)$ [`J/(kg*K)`], and $\gamma(T) = c_p(T)/c_v(T)$ [`-`] across `200–1000 K` and `1000–6000 K` using NASA RP-1311 / GRI-Mech 3.0 coefficients for $\mathrm{N_2, O_2, Ar, CO_2, H_2O}$ with continuous ($C^0$) handoff at $T = 1000\ \text{K}$.
+  - Evaluates vectorized $`c_p(T)`$ [`J/(kg*K)`], $`c_v(T)`$ [`J/(kg*K)`], and $`\gamma(T) = c_p(T)/c_v(T)`$ [`-`] across `200–1000 K` and `1000–6000 K` using NASA RP-1311 / GRI-Mech 3.0 coefficients for $\mathrm{N_2, O_2, Ar, CO_2, H_2O}$ with continuous ($C^0$) handoff at $T = 1000\ \mathrm{K}$.
   - Ships with ready-to-use `DRY_AIR` ($\phi = 0.0$), `DIESEL_BURNED_PRODUCTS` ($n\text{-}\mathrm{C_{12}H_{26}}$ Aero-Diesel surrogate at $\phi = 0.7$), `STOICHIOMETRIC_PRODUCTS` ($\phi = 1.0$), plus `mix_nasa_species` and `make_combustion_mixture(equivalence_ratio, h_c_ratio)` builders.
 - **Convective Wall Heat-Transfer Correlations (`heat_transfer.py`)**:
-  - **Woschni (1967, SAE 670931)** (`WoschniCorrelation`, `compute_woschni_heat_transfer`): Incorporates cylinder bore $B^{-0.2}$, mean piston speed $\bar{S}_p$, swirl velocity $v_u$, and combustion-induced turbulence velocity $C_2 (V_d T_r / P_r V_r) \max(P - P_m, 0)$.
+  - **Woschni (1967, SAE 670931)** (`WoschniCorrelation`, `compute_woschni_heat_transfer`): Incorporates cylinder bore $B^{-0.2}$, mean piston speed $`\bar{S}_p`$, swirl velocity $`v_u`$, and combustion-induced turbulence velocity $`C_2 (V_d T_r / P_r V_r) \max(P - P_m, 0)`$.
   - **Hohenberg (1979, SAE 790825)** (`HohenbergCorrelation`, `compute_hohenberg_heat_transfer`): Instantaneous volume-scaled DI diesel model ($V(\theta)^{-0.06}$) requiring no motored pressure trace.
 - **Single-Zone First-Law AHRR, MFB, IMEP & Knock (`heat_release.py`)**:
-  - `compute_heat_release`: Computes Apparent Net Heat Release Rate ($dQ_n/d\theta$ [`J/deg`]), Gross Chemical Heat Release Rate ($dQ_{\text{gross}}/d\theta = dQ_n/d\theta + dQ_{ht}/d\theta$ [`J/deg`]), and exact cubic-spline cumulative heat release ($Q_n(\theta), Q_{\text{gross}}(\theta)$ [`J`]).
-  - `extract_burn_fractions`: Resolves sub-degree `CA10`, `CA50`, `CA90`, 10–90% combustion duration $\Delta\theta_{10\text{–}90}$, and normalized Mass Fraction Burned $x_b(\theta)$ via continuous cubic-spline root-finding.
+  - `compute_heat_release`: Computes Apparent Net Heat Release Rate ($`dQ_n/d\theta`$ [`J/deg`]), Gross Chemical Heat Release Rate ($`dQ_{\mathrm{gross}}/d\theta = dQ_n/d\theta + dQ_{ht}/d\theta`$ [`J/deg`]), and exact cubic-spline cumulative heat release ($`Q_n(\theta), Q_{\mathrm{gross}}(\theta)`$ [`J`]).
+  - `extract_burn_fractions`: Resolves sub-degree `CA10`, `CA50`, `CA90`, 10–90% combustion duration $`\Delta\theta_{10\mathrm{–}90}`$, and normalized Mass Fraction Burned $`x_b(\theta)`$ via continuous cubic-spline root-finding.
   - `compute_imep`: Integrates $\oint P\,dV$ via cubic splines to report Gross `IMEP` ($[-180^\circ, +180^\circ]$), full-cycle Net `IMEP`, Pumping Mean Effective Pressure (`PMEP`), and gross/net indicated work [`J`].
-  - `compute_knock_metrics`: Quantifies Maximum Amplitude of Pressure Oscillations (`MAPO` [`Pa`]), peak pressure-rise rate $\max(dP/d\theta)$ [`Pa/deg`], and **Eng (2002, SAE 2002-01-2859) Ringing Intensity** ($RI$ [`W/m^2`]) using either zero-phase `4–20 kHz` bandpass filtering (when Nyquist sampling $f_s > 2 f_{\text{high}}$ holds) or Eng's pressure-rise correlation $\Delta P_{\max} = \beta \max(dP/dt)$.
+  - `compute_knock_metrics`: Quantifies Maximum Amplitude of Pressure Oscillations (`MAPO` [`Pa`]), peak pressure-rise rate $\max(dP/d\theta)$ [`Pa/deg`], and **Eng (2002, SAE 2002-01-2859) Ringing Intensity** ($RI$ [`W/m^2`]) using either zero-phase `4–20 kHz` bandpass filtering (when Nyquist sampling $`f_s > 2 f_{\mathrm{high}}`$ holds) or Eng's pressure-rise correlation $`\Delta P_{\max} = \beta \max(dP/dt)`$.
 
 ### 5. ISO 2533 Atmosphere & High-Altitude Aero-Diesel Spray Physics (`constants.py` & `spray/`)
 - **ISO 2533 International Standard Atmosphere (`compute_isa_conditions`)**:
-  - Vectorized solver across `[-500 m, 20,000 m]` (`≈ 65,617 ft`) covering both the linear-lapse troposphere ($0 \le z \le 11{,}000\ \text{m}$, $L = 6.5\ \text{K/km}$) and isothermal lower stratosphere ($11{,}000 < z \le 20{,}000\ \text{m}$, $T = 216.65\ \text{K}$), outputting $T_{\text{amb}}(z)$ [`K`], $P_{\text{amb}}(z)$ [`Pa`], $\rho_{\text{amb}}(z)$ [`kg/m^3`], and acoustic speed $a(z)$ [`m/s`].
+  - Vectorized solver across `[-500 m, 20,000 m]` (`≈ 65,617 ft`) covering both the linear-lapse troposphere ($0 \le z \le 11{,}000\ \mathrm{m}$, $L = 6.5\ \mathrm{K/km}$) and isothermal lower stratosphere ($11{,}000 < z \le 20{,}000\ \mathrm{m}$, $T = 216.65\ \mathrm{K}$), outputting $`T_{\mathrm{amb}}(z)`$ [`K`], $`P_{\mathrm{amb}}(z)`$ [`Pa`], $`\rho_{\mathrm{amb}}(z)`$ [`kg/m^3`], and acoustic speed $a(z)$ [`m/s`].
 - **Hiroyasu & Arai (1990) Two-Regime Spray Penetration (`hiroyasu_arai_penetration`)**:
-  - Evaluates intact-core breakup time $t_b$, breakup length $L_b$, gas-density-independent pre-breakup linear velocity ($t < t_b$), and post-breakup $\rho_g^{-0.25} t^{0.5}$ dispersion ($t \ge t_b$) with exact IEEE-754 $C^0$ intersection continuity at $t = t_b$.
+  - Evaluates intact-core breakup time $`t_b`$, breakup length $`L_b`$, gas-density-independent pre-breakup linear velocity ($`t < t_b`$), and post-breakup $`\rho_g^{-0.25} t^{0.5}`$ dispersion ($`t \ge t_b`$) with exact IEEE-754 $C^0$ intersection continuity at $`t = t_b`$.
 - **Naber & Siebers (1996) / Siebers (1999) Momentum Scaling (`naber_siebers_penetration`)**:
-  - Computes momentum length/time/velocity scales ($x^+, t^+, U_f$) with orifice contraction/velocity coefficients ($C_a, C_v$) and half-cone angle $\tan(\theta_{\text{spray}}/2)$, inverting the implicit momentum conservation law to $< 10^{-15}$ dimensionless residual in 5 unrolled vectorized Newton–Raphson updates (`method="exact"`) or via SAE 960034 Eq. 21 (`method="explicit"`).
+  - Computes momentum length/time/velocity scales ($`x^+, t^+, U_f`$) with orifice contraction/velocity coefficients ($`C_a, C_v`$) and half-cone angle $`\tan(\theta_{\mathrm{spray}}/2)`$, inverting the implicit momentum conservation law to $< 10^{-15}$ dimensionless residual in 5 unrolled vectorized Newton–Raphson updates (`method="exact"`) or via SAE 960034 Eq. 21 (`method="explicit"`).
 - **High-Altitude Wall-Impingement Risk & CFD Error Norms (`evaluate_altitude_spray_risk`, `compute_spray_validation_metrics`)**:
-  - Evaluates $(\rho_{g,\text{SL}} / \rho_{g,\text{alt}})^{0.25}$ penetration stretch and solves analytically for exact sub-step piston-bowl / cylinder-liner impingement onset time $t_{\text{imp}}$ [`s`] when $S(t) \ge L_{\text{wall}}$.
-  - Computes `RMSE` [`m`], zero-floor-guarded `MAPE` [`%`], relative $L_2$ error [`-`], and $L_\infty$ maximum deviation [`m`] with automatic linear interpolation across asynchronous CFD and experimental time bases.
+  - Evaluates $`(\rho_{g,\mathrm{SL}} / \rho_{g,\mathrm{alt}})^{0.25}`$ penetration stretch and solves analytically for exact sub-step piston-bowl / cylinder-liner impingement onset time $`t_{\mathrm{imp}}`$ [`s`] when $`S(t) \ge L_{\mathrm{wall}}`$.
+  - Computes `RMSE` [`m`], zero-floor-guarded `MAPE` [`%`], relative $`L_2`$ error [`-`], and $`L_\infty`$ maximum deviation [`m`] with automatic linear interpolation across asynchronous CFD and experimental time bases.
 
 ### 6. ASME V&V 20-2009 3D Mesh Independence & AMR Oscillation Guard (`ice_cfd_validator.vv`)
 - **3D Cube-Root Representative Spacing (`compute_grid_size`)**:
   - Computes $h_i = (\Delta V_{\text{mean}, i})^{1/3}$ [`m`], $h_i = (V_{\text{domain}} / N_i)^{1/3}$ [`m`], or normalized $h_i = (N_1 / N_i)^{1/3}$ [`-`], enforces strict Fine $<$ Medium $<$ Coarse ordering ($h_1 < h_2 < h_3$), and warns automatically when $r_{21} < 1.3$ or $r_{32} < 1.3$ per ASME V&V 20-2009.
 - **Non-Uniform & AMR-Safe GCI Solver (`compute_gci`)**:
   - Classifies `MONOTONIC` ($0 < R < 1$), `OSCILLATORY` ($R < 0$), and `DIVERGENT` ($R \ge 1$) regimes.
-  - Prevents `NaN` crashes on oscillatory **ANSYS Forte Adaptive Mesh Refinement (AMR)** triplets ($\epsilon_{32}/\epsilon_{21} < 0$) using Celik et al. (2008) sign factor $s = \mathrm{sgn}(\epsilon_{32}/\epsilon_{21})$ and overflow/cancellation-safe `logaddexp`/`expm1` evaluation of $q(p)$.
+  - Prevents `NaN` crashes on oscillatory **ANSYS Forte Adaptive Mesh Refinement (AMR)** triplets ($`\epsilon_{32}/\epsilon_{21} < 0`$) using Celik et al. (2008) sign factor $`s = \mathrm{sgn}(\epsilon_{32}/\epsilon_{21})`$ and overflow/cancellation-safe `logaddexp`/`expm1` evaluation of $q(p)$.
   - Solves the transcendental non-uniform apparent order $p$ equation via primary-branch Aitken $\Delta^2$ acceleration (`scipy.optimize.fixed_point`) backed by 1024-point bracketed Brent root-finding (`brentq`) to $\lvert p - g(p)\rvert \le 10^{-11}$.
-  - Reports $\phi_{\text{ext}}^{21}, \phi_{\text{ext}}^{32}$, $e_a^{21}, e_a^{32}, e_{\text{ext}}^{21}$, $GCI_{\mathrm{fine}}^{21}, GCI_{32}$ ($F_s = 1.25$), Roache asymptotic ratio, and scale-invariant error-coefficient asymptotic ratio.
+  - Reports $`\phi_{\mathrm{ext}}^{21}, \phi_{\mathrm{ext}}^{32}`$, $`e_a^{21}, e_a^{32}, e_{\mathrm{ext}}^{21}`$, $`GCI_{\mathrm{fine}}^{21}, GCI_{32}`$ ($F_s = 1.25$), Roache asymptotic ratio, and scale-invariant error-coefficient asymptotic ratio.
 
 ### 7. High-Altitude Auto-Ignition Kinetics, Livengood-Wu & CFD Diagnostics (`ice_cfd_validator.ignition`)
 - **Empirical Arrhenius & Hardenberg-Hase Auto-Ignition Delay (`correlations.py`)**:
-  - Implements **Wolfer (1938)** and **Assanis et al. (2003)** Arrhenius models $\tau_{\text{id}} = A P^{-n} \phi^{-m} \exp(E_a / (R_u T))$ parameterized for EN590 Diesel and aviation kerosene (Jet-A1 / JP-8 / F-34).
-  - Implements **Hardenberg & Hase (1979, SAE 790493)** global diesel ignition delay correlation with activation energy scaled directly from Cetane Number ($E_a = 618840 / (\text{CN} + 25)\ \text{J/mol}$), mean piston speed $\bar{S}_p$, and strict $P_{\text{TDC}} \le 1.24\ \text{MPa}$ (`12.4 bar`) singularity guards.
+  - Implements **Wolfer (1938)** and **Assanis et al. (2003)** Arrhenius models $`\tau_{\mathrm{id}} = A P^{-n} \phi^{-m} \exp(E_a / (R_u T))`$ parameterized for EN590 Diesel and aviation kerosene (Jet-A1 / JP-8 / F-34).
+  - Implements **Hardenberg & Hase (1979, SAE 790493)** global diesel ignition delay correlation with activation energy scaled directly from Cetane Number ($`E_a = 618840 / (\mathrm{CN} + 25)\ \mathrm{J/mol}`$), mean piston speed $`\bar{S}_p`$, and strict $`P_{\mathrm{TDC}} \le 1.24\ \mathrm{MPa}`$ ($12.4\ \mathrm{bar}$) singularity guards.
 - **Vectorized Dynamic Livengood-Wu (1955) Integral Solver (`livengood_wu.py`)**:
-  - Evaluates the cumulative auto-ignition integral $I(\theta) = \int_{\theta_{\text{SOI}}}^\theta \frac{d\theta'}{6 N \tau_{\text{id}}(P(\theta'), T(\theta'))}$ across arbitrary $P(\theta), T(\theta)$ histories.
-  - Features Hermite cubic sub-grid root interpolation for off-node injection angles $\theta_{\text{SOI}}$ and resolves exact Start-of-Combustion $\theta_{\text{SOC}}$ where $I(\theta_{\text{SOC}}) = 1.0$ to machine precision.
-  - Flags high-altitude subcritical misfire regimes ($I(\theta) < 1.0$) returning `NaN` angles with clean diagnostic flags.
+  - Evaluates the cumulative auto-ignition integral $`I(\theta) = \int_{\theta_{\mathrm{SOI}}}^\theta \frac{d\theta'}{6 N \tau_{\mathrm{id}}(P(\theta'), T(\theta'))}`$ across arbitrary $P(\theta), T(\theta)$ histories.
+  - Features Hermite cubic sub-grid root interpolation for off-node injection angles $`\theta_{\mathrm{SOI}}`$ and resolves exact Start-of-Combustion $`\theta_{\mathrm{SOC}}`$ where $`I(\theta_{\mathrm{SOC}}) = 1.0`$ to machine precision.
+  - Flags high-altitude subcritical misfire regimes ($`I(\theta) < 1.0`$) returning `NaN` angles with clean diagnostic flags.
 - **CFD Ignition Phase & Two-Stage Cool-Flame Extraction (`cfd_detector.py`)**:
-  - Quantifies fuel spray evaporative cooling dip energy ($Q_{\text{evap}}$ [`J`]) between $\theta_{\text{SOI}}$ and zero-crossing $\theta_{\text{SOC}}^{\text{AHRR0}}$.
-  - Extracts multi-criteria chronological ignition metrics: $\theta_{\text{SOC}}^{\text{AHRR0}} < \text{CA01} < \text{CA02} < \text{CA05} < \theta_{\max(d^2P/d\theta^2)}$.
+  - Quantifies fuel spray evaporative cooling dip energy ($`Q_{\mathrm{evap}}`$ [$\mathrm{J}$]) between $`\theta_{\mathrm{SOI}}`$ and zero-crossing $`\theta_{\mathrm{SOC}}^{\mathrm{AHRR0}}`$.
+  - Extracts multi-criteria chronological ignition metrics: $`\theta_{\mathrm{SOC}}^{\mathrm{AHRR0}} < \mathrm{CA01} < \mathrm{CA02} < \mathrm{CA05} < \theta_{\max(d^2P/d\theta^2)}`$.
   - Decomposes two-stage low-temperature combustion into Low-Temperature Heat Release (LTHR), Negative Temperature Coefficient (NTC) dwell, and High-Temperature Heat Release (HTHR) peaks, with defensive guards preventing false-positive LTHR detections on single-stage Wiebe curves.
 
 ### 8. Second-Law Thermodynamics, Altitude Dead-State & Exergy Budget (`ice_cfd_validator.exergy`)
 - **Altitude-Dependent Thermodynamic Dead State (`dead_state.py`)**:
-  - Computes environmental dead-state $(P_0(z), T_0(z), \rho_0(z))$ via ISO 2533 extending through the $11\ \text{km}$ tropopause to the $15\ \text{km}$ isothermal stratosphere.
+  - Computes environmental dead-state $`(P_0(z), T_0(z), \rho_0(z))`$ via ISO 2533 extending through the $11\ \mathrm{km}$ tropopause to the $15\ \mathrm{km}$ isothermal stratosphere.
   - Implements **Kotas (1995)** chemical exergy factor $\varphi = 1.0401 + 0.1728 \cdot (h/c)$ supporting both mass ratio $h/c$ and atomic ratio $(H/C)$ with NIST IUPAC atomic weights ($M_H = 1.00794, M_C = 12.0107$).
 - **Thermomechanical Exergy & Positive-Definiteness (`second_law.py`)**:
-  - Evaluates in-cylinder thermomechanical exergy $E_{\text{tm}} = m \cdot [(u - u_0) + P_0(v - v_0) - T_0(s - s_0)]$ strictly positive-definite over $50 \times 50$ $(T, P)$ Gibbs convexity meshes ($E_{\text{tm}} \ge 0$).
-  - Proves NASA RP-1311 14-coefficient polynomial entropy continuity across $T = 1000\ \text{K}$ handoff ($|\Delta e_{\text{tm}}| < 0.01\ \text{J/kg}$) and satisfies exact Maxwell partial derivative identities.
+  - Evaluates in-cylinder thermomechanical exergy $`E_{\mathrm{tm}} = m \cdot [(u - u_0) + P_0(v - v_0) - T_0(s - s_0)]`$ strictly positive-definite over $50 \times 50$ $(T, P)$ Gibbs convexity meshes ($`E_{\mathrm{tm}} \ge 0`$).
+  - Proves NASA RP-1311 14-coefficient polynomial entropy continuity across $T = 1000\ \mathrm{K}$ handoff ($`|\Delta e_{\mathrm{tm}}| < 0.01\ \mathrm{J/kg}`$) and satisfies exact Maxwell partial derivative identities.
 - **Gouy-Stodola Irreversibility & Closed-Cycle Second-Law Closure (`second_law.py`)**:
-  - Proves **Gouy-Stodola theorem** ($E_{\text{dest}} = T_0 S_{\text{gen}}$) closure within $5 \times 10^{-7}\ \text{J}$ of control volume rate balance.
-  - Evaluates full closed-cycle Second-Law exergy balance ($E_{\text{in}} = E_{\text{work,net}} + E_{\text{Q,wall}} + \Delta E_{\text{tm,exhaust}} + E_{\text{dest}}$) closing to $100.000000\%$ with $< 10^{-9}\ \text{J}$ error.
-  - Demonstrates high-altitude blowdown exergy recovery potential ($+24.87\%$ gain at $30{,}000\ \text{ft}$).
+  - Proves **Gouy-Stodola theorem** ($`E_{\mathrm{dest}} = T_0 S_{\mathrm{gen}}`$) closure within $5 \times 10^{-7}\ \mathrm{J}$ of control volume rate balance.
+  - Evaluates full closed-cycle Second-Law exergy balance ($`E_{\mathrm{in}} = E_{\mathrm{work,net}} + E_{Q,\mathrm{wall}} + \Delta E_{\mathrm{tm,exhaust}} + E_{\mathrm{dest}}`$) closing to $100.000000\%$ with $< 10^{-9}\ \mathrm{J}$ error.
+  - Demonstrates high-altitude blowdown exergy recovery potential ($+24.87\%$ gain at $30{,}000\ \mathrm{ft}$).
 
 ### 9. Headless 300-DPI SAE / IEEE Publication Visualizers (`ice_cfd_validator.plotting`)
 - Built directly on `matplotlib.figure.Figure` + `FigureCanvasAgg` without touching global `pyplot` state (zero memory leaks across batch sweeps; 100% compatible with headless Linux clusters and GitHub Actions):
@@ -344,11 +344,11 @@ $$
 I(\theta) = \int_{\theta_{\mathrm{SOI}}}^\theta \frac{d\theta'}{6 N \tau_{\mathrm{id}}\left(P(\theta'), T(\theta')\right)}
 $$
 
-Auto-ignition occurs at Start-of-Combustion $\theta_{\text{SOC}}$ where $I(\theta_{\text{SOC}}) = 1.0$. If $I(\theta_{\max}) < 1.0$, high-altitude misfire is flagged.
+Auto-ignition occurs at Start-of-Combustion $`\theta_{\mathrm{SOC}}`$ where $`I(\theta_{\mathrm{SOC}}) = 1.0`$. If $`I(\theta_{\max}) < 1.0`$, high-altitude misfire is flagged.
 
 ### 7. Second-Law Thermodynamics, Dead State & Exergy Destruction (Kotas, 1995; Caton, 2000; Rakopoulos & Giakoumis, 2006)
 
-Under altitude-dependent ambient dead state $(P_0(z), T_0(z))$, in-cylinder specific thermomechanical exergy is:
+Under altitude-dependent ambient dead state $`(P_0(z), T_0(z))`$, in-cylinder specific thermomechanical exergy is:
 
 $$
 e_{\mathrm{tm}}(\theta) = \left(u(T) - u_0\right) + P_0 \left(v(\theta) - v_0\right) - T_0 \left(s(T, P) - s_0\right) \ge 0
@@ -366,7 +366,7 @@ $$
 \frac{dE_{\mathrm{tm}}}{d\theta} = \frac{dE_{\mathrm{comb}}}{d\theta} - \frac{dE_W}{d\theta} - \frac{dE_Q}{d\theta} - \frac{dE_{\mathrm{dest}}}{d\theta}
 $$
 
-where work exergy rate is $\frac{dE_W}{d\theta} = (P - P_0) \frac{dV}{d\theta}$, heat transfer exergy rate to wall at $T_w$ is $\frac{dE_Q}{d\theta} = \left(1 - \frac{T_0}{T_w}\right) \frac{dQ_{ht}}{d\theta}$, and exergy destruction rate obeys the **Gouy-Stodola theorem**:
+where work exergy rate is $`\frac{dE_W}{d\theta} = (P - P_0) \frac{dV}{d\theta}`$, heat transfer exergy rate to wall at $T_w$ is $`\frac{dE_Q}{d\theta} = \left(1 - \frac{T_0}{T_w}\right) \frac{dQ_{ht}}{d\theta}`$, and exergy destruction rate obeys the **Gouy-Stodola theorem**:
 
 $$
 \frac{dE_{\mathrm{dest}}}{d\theta} = T_0 \frac{dS_{\mathrm{gen}}}{d\theta} = \left(\varphi - \left(1 - \frac{T_0}{T(\theta)}\right)\right) \frac{dQ_{\mathrm{gross}}}{d\theta} + T_0 \left(\frac{1}{T_w} - \frac{1}{T(\theta)}\right) \frac{dQ_{ht}}{d\theta}
@@ -825,6 +825,34 @@ If you use **`ice-cfd-validation-assistant`** in academic papers, theses, or CFD
 
 ---
 
-## License
+## License & Third-Party Notices
 
-Distributed under the **MIT License**. See [`LICENSE`](LICENSE) for full copyright and permission details.
+### Core Software License
+The `ice-cfd-validation-assistant` source code is distributed under the open-source **[MIT License](LICENSE)**:
+
+```text
+Copyright (c) 2026 Alperen Öztel
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software...
+```
+
+### Permissive Third-Party Open-Source Dependencies
+This package builds upon and interoperates with standard scientific Python libraries distributed under permissive licenses:
+
+| Component | Role in Toolkit | License Type | Copyright / Origin |
+| :--- | :--- | :---: | :--- |
+| **NumPy** | Vectorized array operations, broadcasting, linear algebra | [BSD 3-Clause](https://numpy.org/doc/stable/license.html) | Copyright (c) 2005–2024 NumPy Developers |
+| **SciPy** | Splines (`CubicSpline`), root-finding (`brentq`), signal filters (`sosfiltfilt`), ODE solver | [BSD 3-Clause](https://scipy.org/scipylib/license/) | Copyright (c) 2001–2024 SciPy Developers |
+| **Pandas** | Tabular DataFrame structures and CSV ingestion pipelines | [BSD 3-Clause](https://pandas.pydata.org/docs/getting_started/overview.html#license) | Copyright (c) 2008–2024 AQR Capital Management, Lambda Foundry, PyData |
+| **Matplotlib** | Headless publication-quality figure rendering (`FigureCanvasAgg`) | [PSF / BSD-Compatible](https://matplotlib.org/stable/users/project/license.html) | Copyright (c) 2002–2024 John D. Hunter, Matplotlib Development Team |
+| **Pytest** | Analytical verification and physical audit test runner | [MIT License](https://docs.pytest.org/en/stable/license.html) | Copyright (c) 2004–2024 Holger Krekel and pytest-dev team |
+| **Pyrefly** | High-performance PEP 561 static type checking | [MIT / Apache-2.0](https://github.com/facebook/pyrefly) | Copyright (c) 2024 Meta Platforms, Inc. |
+
+### Public Scientific Datasets & Government Works
+- **Sandia Engine Combustion Network (ECN)**: Experimental spray penetration tables (`Spray A`, `Spray D`) are public-domain / open-science benchmarks created by Sandia National Laboratories for the U.S. Department of Energy National Nuclear Security Administration under Contract DE-NA0003525. They are freely usable for model validation.
+- **NASA Glenn Thermodynamic Polynomials (NASA RP-1311)**: Thermodynamic 14-coefficient ideal-gas functions (McBride et al.) are works of the United States Government and reside in the public domain under 17 U.S.C. § 105.
+- **GRI-Mech 3.0 Reaction Mechanism**: Combustion kinetics polynomials developed by Gas Research Institute / UC Berkeley under open academic research terms.
+
+### International Engineering Standards Compliance
+- **ASME V&V 20-2009** (*Standard for Verification and Validation in Computational Fluid Dynamics and Heat Transfer*)
+- **ISO 2533:1975** (*Standard Atmosphere*)
+All verification and atmospheric routines in this repository are independent original algorithmic implementations of published mathematical formulations. No proprietary or copyrighted text from the standards bodies is reproduced.
