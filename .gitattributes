@@ -1,0 +1,19 @@
+# Normalize text files to LF in repository while preserving binary assets
+* text=auto eol=lf
+
+# Python & configuration sources
+*.py text eol=lf
+*.pyi text eol=lf
+*.toml text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+*.cff text eol=lf
+*.md text eol=lf
+*.csv text eol=lf
+
+# Binary publication figures & documents
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.pdf binary
+*.svg text eol=lf

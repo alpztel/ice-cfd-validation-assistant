@@ -1,0 +1,85 @@
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ice-cfd-validation-assistant"
+version = "0.1.0"
+description = "Open-source 0D/1D thermodynamic cycle diagnostics, high-altitude Aero-Diesel spray physics, and ASME V&V 20-2009 3D CFD validation toolkit for ANSYS Forte and Sandia ECN datasets."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { file = "LICENSE" }
+authors = [
+    { name = "Alperen Öztel", email = "207943277+alpztel@users.noreply.github.com" },
+]
+maintainers = [
+    { name = "Alperen Öztel", email = "207943277+alpztel@users.noreply.github.com" },
+]
+keywords = [
+    "cfd",
+    "internal-combustion-engine",
+    "ansys-forte",
+    "thermodynamics",
+    "heat-release-rate",
+    "aero-diesel",
+    "spray-penetration",
+    "ecn-spray",
+    "asme-vv20",
+    "grid-convergence-index",
+    "verification-and-validation",
+    "richardson-extrapolation",
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Science/Research",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3 :: Only",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Scientific/Engineering",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Atmospheric Science",
+    "Topic :: Scientific/Engineering :: Visualization",
+    "Typing :: Typed",
+]
+dependencies = [
+    "numpy>=1.26",
+    "scipy>=1.11",
+    "pandas>=2.1",
+    "matplotlib>=3.8",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pyrefly>=0.15",
+    "scipy-stubs>=1.14",
+]
+
+[project.urls]
+Homepage = "https://github.com/alpztel/ice-cfd-validation-assistant"
+Repository = "https://github.com/alpztel/ice-cfd-validation-assistant.git"
+Documentation = "https://github.com/alpztel/ice-cfd-validation-assistant#readme"
+Issues = "https://github.com/alpztel/ice-cfd-validation-assistant/issues"
+Changelog = "https://github.com/alpztel/ice-cfd-validation-assistant/blob/main/CHANGELOG.md"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+ice_cfd_validator = ["py.typed"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-ra -q --strict-markers"
+
+[tool.pyrefly]
+project-includes = ["src", "tests", "examples"]
+search-path = ["src", "."]
+site-package-path = [".venv/Lib/site-packages"]
+python-version = "3.11"

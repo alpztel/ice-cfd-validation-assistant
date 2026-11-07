@@ -1,0 +1,134 @@
+cff-version: 1.2.0
+message: "If you use ice-cfd-validation-assistant in academic research, CFD verification reports, or engineering publications, please cite it using the metadata below."
+type: software
+title: "ice-cfd-validation-assistant: Open-Source 0D/1D ICE Thermodynamic Diagnostics, High-Altitude Aero-Diesel Spray Physics, and ASME V&V 20-2009 3D CFD Validation Toolkit"
+abstract: >-
+  Strictly SI-normalized, vectorized Python 3.11+ engineering library for
+  post-processing ANSYS Forte 3D internal combustion engine CFD simulations and
+  Sandia Engine Combustion Network (ECN) spray datasets. Provides automated
+  unit-safe ingestion, zero-phase pressure filtering, 4th-order non-uniform
+  differentiation, 7-coefficient NASA Glenn thermodynamic polynomials, Woschni
+  and Hohenberg wall heat-transfer models, Heywood single-zone First-Law
+  apparent and gross heat release rate (AHRR), sub-degree CA10/CA50/CA90 MFB
+  extraction, MAPO and Eng (2002) acoustic Ringing Intensity, ISO 2533 Standard
+  Atmosphere scaling, Hiroyasu-Arai (1990) and Naber-Siebers (1996) / Siebers
+  (1999) high-altitude spray penetration and wall-impingement risk assessment,
+  ASME V&V 20-2009 / Celik et al. (2008) three-grid Grid Convergence Index (GCI)
+  with AMR oscillatory convergence protection, and 300-DPI SAE/IEEE publication
+  plotting.
+authors:
+  - family-names: "Öztel"
+    given-names: "Alperen"
+repository-code: "https://github.com/alpztel/ice-cfd-validation-assistant"
+url: "https://github.com/alpztel/ice-cfd-validation-assistant"
+license: MIT
+version: "0.1.0"
+date-released: "2026-11-07"
+keywords:
+  - computational-fluid-dynamics
+  - internal-combustion-engines
+  - ansys-forte
+  - thermodynamics
+  - heat-release-rate
+  - aero-diesel
+  - fuel-spray-penetration
+  - engine-combustion-network
+  - verification-and-validation
+  - asme-vv20
+  - grid-convergence-index
+references:
+  - type: book
+    title: "Internal Combustion Engine Fundamentals"
+    edition: "2"
+    authors:
+      - family-names: "Heywood"
+        given-names: "John B."
+    publisher:
+      name: "McGraw-Hill Education"
+    year: 2018
+  - type: conference-paper
+    title: "A Universally Applicable Equation for the Instantaneous Heat Transfer Coefficient in the Internal Combustion Engine"
+    authors:
+      - family-names: "Woschni"
+        given-names: "Gerhard"
+    collection-title: "SAE Technical Paper 670931"
+    year: 1967
+    doi: "10.4271/670931"
+  - type: conference-paper
+    title: "Advanced Approaches for Heat Transfer Calculations"
+    authors:
+      - family-names: "Hohenberg"
+        given-names: "Günter F."
+    collection-title: "SAE Technical Paper 790825"
+    year: 1979
+    doi: "10.4271/790825"
+  - type: conference-paper
+    title: "Characterization of Pressure Waves in HCCI Combustion"
+    authors:
+      - family-names: "Eng"
+        given-names: "J. A."
+    collection-title: "SAE Technical Paper 2002-01-2859"
+    year: 2002
+    doi: "10.4271/2002-01-2859"
+  - type: conference-paper
+    title: "Structures of Fuel Sprays in Diesel Engines"
+    authors:
+      - family-names: "Hiroyasu"
+        given-names: "Hiroyuki"
+      - family-names: "Arai"
+        given-names: "Masataka"
+    collection-title: "SAE Technical Paper 900475"
+    year: 1990
+    doi: "10.4271/900475"
+  - type: conference-paper
+    title: "Effects of Gas Density and Vaporization on Penetration and Dispersion of Diesel Sprays"
+    authors:
+      - family-names: "Naber"
+        given-names: "Jeffrey D."
+      - family-names: "Siebers"
+        given-names: "Dennis L."
+    collection-title: "SAE Technical Paper 960034"
+    year: 1996
+    doi: "10.4271/960034"
+  - type: conference-paper
+    title: "Scaling Liquid-Phase Fuel Penetration in Diesel Sprays Based on Mixing-Limited Vaporization"
+    authors:
+      - family-names: "Siebers"
+        given-names: "Dennis L."
+    collection-title: "SAE Technical Paper 1999-01-0528"
+    year: 1999
+    doi: "10.4271/1999-01-0528"
+  - type: book
+    title: "Verification and Validation in Computational Science and Engineering"
+    authors:
+      - family-names: "Roache"
+        given-names: "Patrick J."
+    publisher:
+      name: "Hermosa Publishers"
+    year: 1998
+  - type: article
+    title: "Procedure for Estimation and Reporting of Uncertainty Due to Discretization in CFD Applications"
+    authors:
+      - family-names: "Celik"
+        given-names: "Ismail B."
+      - family-names: "Ghia"
+        given-names: "Urmila"
+      - family-names: "Roache"
+        given-names: "Patrick J."
+      - family-names: "Freitas"
+        given-names: "Christopher J."
+      - family-names: "Coleman"
+        given-names: "Hugh"
+      - family-names: "Raad"
+        given-names: "Peter E."
+    journal: "ASME Journal of Fluids Engineering"
+    volume: 130
+    issue: 7
+    start: "078001"
+    year: 2008
+    doi: "10.1115/1.2960953"
+  - type: standard
+    title: "Standard for Verification and Validation in Computational Fluid Dynamics and Heat Transfer (ASME V&V 20-2009)"
+    institution:
+      name: "American Society of Mechanical Engineers"
+    year: 2009

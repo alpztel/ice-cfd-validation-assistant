@@ -1,0 +1,48 @@
+name: Physics & ASME V&V Validation Suite
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+
+permissions:
+  contents: read
+
+jobs:
+  analytical-validation:
+    name: Python ${{ matrix.python-version }} Analytical & V&V Suite (Ubuntu)
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12", "3.13"]
+
+    env:
+      MPLBACKEND: Agg
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: "pip"
+
+      - name: Upgrade pip and install package with dev dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev]"
+
+      - name: Static type check (pyrefly)
+        run: |
+          PURELIB=$(python -c "import sysconfig; print(sysconfig.get_path('purelib'))")
+          pyrefly check --site-package-path "$PURELIB"
+
+      - name: Execute analytical thermodynamics, spray scaling & ASME GCI test suite
+        run: pytest -v
+
+      - name: Smoke-test end-to-end Aero-Diesel altitude sweep & 300-DPI figure export
+        run: python examples/altitude_sweep_demo.py
