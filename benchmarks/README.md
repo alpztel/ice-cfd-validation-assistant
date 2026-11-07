@@ -1,6 +1,6 @@
 # Verification & Validation Benchmarks
 
-This directory serves as the workspace for open-literature **Engine Combustion Network (ECN)** experimental datasets (`Spray A` $n$-dodecane $90\ \mu\text{m}$ and `Spray D` $186\ \mu\text{m}$ nozzles) and analytical verification reference tables.
+This directory serves as the workspace for open-literature **Engine Combustion Network (ECN)** experimental datasets (`Spray A` *n*-dodecane, $90\ \mu\text{m}$, and `Spray D`, $186\ \mu\text{m}$ nozzles) and analytical verification reference tables.
 
 ## Strict Open-Science Policy
 - Zero proprietary engine geometries or OEM test-cell measurements are stored in this repository.

@@ -7,7 +7,7 @@ abstract: >-
   post-processing ANSYS Forte 3D internal combustion engine CFD simulations and
   Sandia Engine Combustion Network (ECN) spray datasets. Provides automated
   unit-safe ingestion, zero-phase pressure filtering, 4th-order non-uniform
-  differentiation, 7-coefficient NASA Glenn thermodynamic polynomials, Woschni
+  differentiation, 14-coefficient (2x7-term) NASA Glenn thermodynamic polynomials, Woschni
   and Hohenberg wall heat-transfer models, Heywood single-zone First-Law
   apparent and gross heat release rate (AHRR), sub-degree CA10/CA50/CA90 MFB
   extraction, MAPO and Eng (2002) acoustic Ringing Intensity, ISO 2533 Standard

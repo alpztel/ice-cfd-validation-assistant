@@ -24,7 +24,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `heat_transfer.py`: Vectorized Woschni (1967, SAE 670931) and Hohenberg (1979, SAE 790825) in-cylinder wall heat-transfer models (`WoschniCorrelation`, `HohenbergCorrelation`, `compute_woschni_heat_transfer`, `compute_hohenberg_heat_transfer`).
   - `heat_release.py`: Heywood (2018) single-zone First-Law net and gross AHRR (`compute_heat_release`), sub-degree cubic-spline `CA10`/`CA50`/`CA90` MFB solver (`extract_burn_fractions`), Gross/Net `IMEP` & `PMEP` (`compute_imep`), and `MAPO` + Eng (2002) acoustic Ringing Intensity (`compute_knock_metrics`).
 - **`ice_cfd_validator.spray`**:
-  - Vectorized $C^0$-continuous Hiroyasu & Arai (1990, SAE 900475) two-regime spray penetration (`hiroyasu_arai_penetration`).
+  - Vectorized continuous ($C^0$) Hiroyasu & Arai (1990, SAE 900475) two-regime spray penetration (`hiroyasu_arai_penetration`).
   - Vectorized Newton-exact Naber & Siebers (1996, SAE 960034) / Siebers (1999) momentum scaling (`naber_siebers_penetration`).
   - High-altitude gas-density over-penetration and sub-step piston-bowl wall-impingement auditor (`evaluate_altitude_spray_risk`) plus asynchronous CFD error norms (`compute_spray_validation_metrics`: `RMSE`, `MAPE`, $L_2$, $L_\infty$).
 - **`ice_cfd_validator.vv`**:
